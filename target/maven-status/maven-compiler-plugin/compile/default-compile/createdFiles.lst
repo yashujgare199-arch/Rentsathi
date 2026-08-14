@@ -1,2 +1,7 @@
 com\rentsathi\ui\screens\SplashScreen.class
+com\rentsathi\ui\screens\DeliveryPartnerLoginScreen.class
 com\rentsathi\Main.class
+com\rentsathi\ui\screens\WelcomeScreen.class
+com\rentsathi\ui\screens\OwnerLoginScreen.class
+com\rentsathi\ui\screens\AdminLoginScreen.class
+com\rentsathi\ui\screens\CustomerLoginScreen.class

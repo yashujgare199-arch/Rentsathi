@@ -1,148 +1,299 @@
 package com.rentsathi.ui.screens;
 
 import javafx.animation.FadeTransition;
-import javafx.animation.PauseTransition;
+import javafx.animation.ParallelTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.SequentialTransition;
+import javafx.animation.Timeline;
+import javafx.animation.KeyFrame;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
+import javafx.animation.PauseTransition;
 public class SplashScreen {
 
-    private final Stage stage;
+    private static final String PRIMARY_BLUE = "#3657C8";
+    private static final String DARK_BLUE = "#29476B";
+    private static final String BORDER_PURPLE = "#7166E8";
+    private static final String LIGHT_GREY = "#E5E8EF";
 
-    public SplashScreen(Stage stage) {
-        this.stage = stage;
-    }
+    public static void show(Stage stage) {
 
-    public void show() {
+        BorderPane root = new BorderPane();
 
-        // -----------------------------
-        // Logo Circle
-        // -----------------------------
-        Circle logoCircle = new Circle(55);
-        logoCircle.setFill(Color.web("#F59E0B"));
+        root.setStyle(
+                "-fx-background-color: white;"
+        );
 
-        Label logoText = new Label("R");
-        logoText.setFont(Font.font("Arial", FontWeight.BOLD, 48));
-        logoText.setTextFill(Color.WHITE);
+        Rectangle border = new Rectangle();
 
-        StackPane logo = new StackPane();
-        logo.getChildren().addAll(logoCircle, logoText);
+        border.setFill(Color.TRANSPARENT);
+        border.setStroke(Color.web(BORDER_PURPLE));
+        border.setStrokeWidth(4);
 
-        // -----------------------------
-        // Application Name
-        // -----------------------------
+        border.widthProperty().bind(root.widthProperty());
+        border.heightProperty().bind(root.heightProperty());
+
+        Image logoImage = new Image(
+        SplashScreen.class
+                .getResource("/images/logo.png")
+                .toExternalForm()
+);
+
+        ImageView logo = new ImageView(logoImage);
+
+        logo.setFitWidth(150);
+        logo.setFitHeight(150);
+        logo.setPreserveRatio(true);
+
+        logo.setOpacity(0);
+        logo.setScaleX(0.75);
+        logo.setScaleY(0.75);
+
         Label title = new Label("RentSathi");
-        title.setFont(Font.font("Arial", FontWeight.BOLD, 42));
-        title.setTextFill(Color.WHITE);
 
-        // -----------------------------
-        // Tagline
-        // -----------------------------
+        title.setStyle(
+                "-fx-font-family: 'Arial';" +
+                "-fx-font-size: 58px;" +
+                "-fx-font-weight: bold;" +
+                "-fx-text-fill: " + PRIMARY_BLUE + ";"
+        );
+
+        title.setOpacity(0);
+
         Label tagline = new Label("Rent Smart. Live Easy.");
-        tagline.setFont(Font.font("Arial", FontWeight.NORMAL, 18));
-        tagline.setTextFill(Color.LIGHTGRAY);
 
-        // -----------------------------
-        // Loading text
-        // -----------------------------
-        Label loading = new Label("Loading...");
-        loading.setFont(Font.font("Arial", 14));
-        loading.setTextFill(Color.GRAY);
+        tagline.setStyle(
+                "-fx-font-family: 'Arial';" +
+                "-fx-font-size: 22px;" +
+                "-fx-text-fill: " + DARK_BLUE + ";"
+        );
 
-        // -----------------------------
-        // Content
-        // -----------------------------
-        VBox content = new VBox(15);
-        content.setAlignment(Pos.CENTER);
+        tagline.setOpacity(0);
 
-        content.getChildren().addAll(
+        VBox centerContent = new VBox();
+
+        centerContent.setAlignment(Pos.CENTER);
+        centerContent.setSpacing(8);
+
+        centerContent.getChildren().addAll(
                 logo,
                 title,
-                tagline,
-                loading
+                tagline
         );
 
-        // -----------------------------
-        // Background
-        // -----------------------------
-        Rectangle background = new Rectangle();
+        centerContent.setTranslateY(-25);
 
-        background.setFill(Color.web("#111111"));
+        ProgressBar progressBar = new ProgressBar(0);
 
-        background.widthProperty().bind(stage.widthProperty());
-        background.heightProperty().bind(stage.heightProperty());
+        progressBar.setPrefWidth(280);
+        progressBar.setPrefHeight(5);
 
-        // -----------------------------
-        // Root
-        // -----------------------------
-        StackPane root = new StackPane();
-
-        root.getChildren().addAll(
-                background,
-                content
+        progressBar.setStyle(
+                "-fx-accent: #4969E8;" +
+                "-fx-control-inner-background: " + LIGHT_GREY + ";" +
+                "-fx-background-color: transparent;"
         );
 
-        // -----------------------------
-        // Scene
-        // -----------------------------
-        Scene scene = new Scene(root, 1000, 650);
+        Label loadingText = new Label(
+                "Loading RentSathi..."
+        );
+
+        loadingText.setStyle(
+                "-fx-font-family: 'Arial';" +
+                "-fx-font-size: 17px;" +
+                "-fx-text-fill: " + DARK_BLUE + ";"
+        );
+
+        VBox loadingBox = new VBox();
+
+        loadingBox.setAlignment(Pos.CENTER);
+        loadingBox.setSpacing(12);
+
+        loadingBox.getChildren().addAll(
+                progressBar,
+                loadingText
+        );
+
+        loadingBox.setTranslateY(-8);
+
+        StackPane centerPane = new StackPane();
+
+        centerPane.getChildren().add(centerContent);
+
+        StackPane.setAlignment(
+                centerContent,
+                Pos.CENTER
+        );
+
+        root.setCenter(centerPane);
+        root.setBottom(loadingBox);
+
+        BorderPane.setAlignment(
+                loadingBox,
+                Pos.CENTER
+        );
+
+        StackPane finalRoot = new StackPane();
+
+        finalRoot.getChildren().addAll(
+                root,
+                border
+        );
+
+              
+        Scene scene = new Scene(
+        finalRoot,
+        1500,
+        780
+     );
+
+        scene.setFill(Color.WHITE);
 
         stage.setTitle("RentSathi");
         stage.setScene(scene);
-        stage.centerOnScreen();
+        stage.setMinWidth(900);
+        stage.setMinHeight(600);
         stage.show();
 
-        // -----------------------------
-        // Fade In Animation
-        // -----------------------------
-        FadeTransition fadeIn = new FadeTransition(
-                Duration.seconds(1.2),
-                content
+        playAnimation(
+                logo,
+                title,
+                tagline,
+                progressBar
         );
-
-        fadeIn.setFromValue(0);
-        fadeIn.setToValue(1);
-
-        fadeIn.play();
-
-        // -----------------------------
-        // Wait before next screen
-        // -----------------------------
-        PauseTransition pause = new PauseTransition(
-                Duration.seconds(2.5)
-        );
-
-        pause.setOnFinished(event -> {
-            showNextScreen();
-        });
-
-        pause.play();
     }
 
-    private void showNextScreen() {
+    private static void playAnimation(
+            ImageView logo,
+            Label title,
+            Label tagline,
+            ProgressBar progressBar
+    ) {
 
-        // Login screen will be created next.
-        // For now, keep a simple message.
+        FadeTransition logoFade =
+                new FadeTransition(
+                        Duration.millis(700),
+                        logo
+                );
 
-        Label message = new Label("RentSathi is ready!");
-        message.setFont(Font.font("Arial", FontWeight.BOLD, 30));
-        message.setTextFill(Color.WHITE);
+        logoFade.setFromValue(0);
+        logoFade.setToValue(1);
 
-        StackPane root = new StackPane(message);
-        root.setStyle("-fx-background-color: #111111;");
+        ScaleTransition logoScale =
+                new ScaleTransition(
+                        Duration.millis(700),
+                        logo
+                );
 
-        Scene scene = new Scene(root, 1000, 650);
+        logoScale.setFromX(0.75);
+        logoScale.setFromY(0.75);
+        logoScale.setToX(1);
+        logoScale.setToY(1);
 
-        stage.setScene(scene);
+        ParallelTransition logoAnimation =
+                new ParallelTransition(
+                        logoFade,
+                        logoScale
+                );
+
+        FadeTransition titleFade =
+                new FadeTransition(
+                        Duration.millis(600),
+                        title
+                );
+
+        titleFade.setFromValue(0);
+        titleFade.setToValue(1);
+
+        FadeTransition taglineFade =
+                new FadeTransition(
+                        Duration.millis(600),
+                        tagline
+                );
+
+        taglineFade.setFromValue(0);
+        taglineFade.setToValue(1);
+
+        SequentialTransition intro =
+                new SequentialTransition(
+                        logoAnimation,
+                        titleFade,
+                        taglineFade
+                );
+
+        intro.play();
+
+        Timeline loadingAnimation =
+                new Timeline(
+
+                        new KeyFrame(
+                                Duration.ZERO,
+                                event ->
+                                        progressBar.setProgress(0)
+                        ),
+
+                        new KeyFrame(
+                                Duration.millis(500),
+                                event ->
+                                        progressBar.setProgress(0.15)
+                        ),
+
+                        new KeyFrame(
+                                Duration.millis(1000),
+                                event ->
+                                        progressBar.setProgress(0.35)
+                        ),
+
+                        new KeyFrame(
+                                Duration.millis(1500),
+                                event ->
+                                        progressBar.setProgress(0.55)
+                        ),
+
+                        new KeyFrame(
+                                Duration.millis(2000),
+                                event ->
+                                        progressBar.setProgress(0.75)
+                        ),
+
+                        new KeyFrame(
+                                Duration.millis(2500),
+                                event ->
+                                        progressBar.setProgress(1.0)
+                        )
+                );
+
+        loadingAnimation.setOnFinished(event -> {
+
+
+            PauseTransition pause =
+                new PauseTransition(
+                    Duration.millis(300)
+                );
+
+            pause.setOnFinished(e ->
+                WelcomeScreen.show(
+                    (Stage) progressBar
+                            .getScene()
+                            .getWindow()
+                )
+            );
+
+            pause.play();
+        });
+
+    loadingAnimation.play();
+        
     }
 }

@@ -1,17 +1,14 @@
 package com.rentsathi;
 
-import com.rentsathi.ui.screens.SplashScreen;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import com.rentsathi.ui.screens.SplashScreen;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
-
-        SplashScreen splashScreen = new SplashScreen(stage);
-
-        splashScreen.show();
+        SplashScreen.show(stage);
     }
 
     public static void main(String[] args) {

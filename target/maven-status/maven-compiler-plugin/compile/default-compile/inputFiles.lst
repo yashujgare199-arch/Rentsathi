@@ -15,7 +15,12 @@ C:\Users\sahil\OneDrive\Documents\Desktop\RentSathi\src\main\java\com\rentsathi\
 C:\Users\sahil\OneDrive\Documents\Desktop\RentSathi\src\main\java\com\rentsathi\navigation\NavigationService.java
 C:\Users\sahil\OneDrive\Documents\Desktop\RentSathi\src\main\java\com\rentsathi\navigation\Route.java
 C:\Users\sahil\OneDrive\Documents\Desktop\RentSathi\src\main\java\com\rentsathi\navigation\SceneManager.java
+C:\Users\sahil\OneDrive\Documents\Desktop\RentSathi\src\main\java\com\rentsathi\ui\screens\AdminLoginScreen.java
+C:\Users\sahil\OneDrive\Documents\Desktop\RentSathi\src\main\java\com\rentsathi\ui\screens\CustomerLoginScreen.java
+C:\Users\sahil\OneDrive\Documents\Desktop\RentSathi\src\main\java\com\rentsathi\ui\screens\DeliveryPartnerLoginScreen.java
+C:\Users\sahil\OneDrive\Documents\Desktop\RentSathi\src\main\java\com\rentsathi\ui\screens\OwnerLoginScreen.java
 C:\Users\sahil\OneDrive\Documents\Desktop\RentSathi\src\main\java\com\rentsathi\ui\screens\SplashScreen.java
+C:\Users\sahil\OneDrive\Documents\Desktop\RentSathi\src\main\java\com\rentsathi\ui\screens\WelcomeScreen.java
 C:\Users\sahil\OneDrive\Documents\Desktop\RentSathi\src\main\java\com\rentsathi\validators\BookingValidator.java
 C:\Users\sahil\OneDrive\Documents\Desktop\RentSathi\src\main\java\com\rentsathi\validators\ListingValidator.java
 C:\Users\sahil\OneDrive\Documents\Desktop\RentSathi\src\main\java\com\rentsathi\validators\LoginValidator.java
