@@ -1,5 +1,8 @@
 package com.rentsathi.ui.screens;
 
+import com.rentsathi.firebase.authentication.FirebaseAuthService;
+import com.rentsathi.ui.screens.admin.AdminDashboardScreen;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -29,6 +32,10 @@ public class AdminLoginScreen {
     private static final String BORDER = "#C8CBD9";
     private static final String ERROR = "#C62828";
 
+    // ============================================================
+    // SHOW ADMIN LOGIN SCREEN
+    // ============================================================
+
     public static void show(Stage stage) {
 
         BorderPane root = new BorderPane();
@@ -56,7 +63,8 @@ public class AdminLoginScreen {
 
         VBox leftPanel = createLeftPanel();
 
-        StackPane rightPanel = createLoginPanel(stage);
+        StackPane rightPanel =
+                createLoginPanel(stage);
 
         root.setLeft(leftPanel);
         root.setCenter(rightPanel);
@@ -65,7 +73,8 @@ public class AdminLoginScreen {
                 root.widthProperty().multiply(0.5)
         );
 
-        StackPane finalRoot = new StackPane();
+        StackPane finalRoot =
+                new StackPane();
 
         finalRoot.getChildren().addAll(
                 root,
@@ -94,6 +103,10 @@ public class AdminLoginScreen {
         stage.show();
     }
 
+    // ============================================================
+    // LEFT PANEL
+    // ============================================================
+
     private static VBox createLeftPanel() {
 
         VBox panel = new VBox();
@@ -114,11 +127,11 @@ public class AdminLoginScreen {
 
         HBox brand = createBrand();
 
-        StackPane graphic = createAdminGraphic();
+        StackPane graphic =
+                createAdminGraphic();
 
-        VBox graphicBox = new VBox(
-                graphic
-        );
+        VBox graphicBox =
+                new VBox(graphic);
 
         graphicBox.setAlignment(
                 Pos.CENTER
@@ -174,6 +187,10 @@ public class AdminLoginScreen {
         return panel;
     }
 
+    // ============================================================
+    // BRAND
+    // ============================================================
+
     private static HBox createBrand() {
 
         Image image = new Image(
@@ -184,9 +201,8 @@ public class AdminLoginScreen {
                         .toExternalForm()
         );
 
-        ImageView logo = new ImageView(
-                image
-        );
+        ImageView logo =
+                new ImageView(image);
 
         logo.setFitWidth(45);
         logo.setFitHeight(45);
@@ -232,19 +248,25 @@ public class AdminLoginScreen {
         return brand;
     }
 
+    // ============================================================
+    // ADMIN GRAPHIC
+    // ============================================================
+
     private static StackPane createAdminGraphic() {
 
-        StackPane graphic = new StackPane();
+        StackPane graphic =
+                new StackPane();
 
         graphic.setPrefSize(
                 500,
                 390
         );
 
-        Rectangle background = new Rectangle(
-                500,
-                390
-        );
+        Rectangle background =
+                new Rectangle(
+                        500,
+                        390
+                );
 
         background.setFill(
                 Color.web("#F0F0FA")
@@ -256,6 +278,7 @@ public class AdminLoginScreen {
 
         background.setStrokeWidth(1);
 
+        // Vertical grid lines
         for (int x = 0; x <= 500; x += 40) {
 
             Line line = new Line(
@@ -274,6 +297,7 @@ public class AdminLoginScreen {
             );
         }
 
+        // Horizontal grid lines
         for (int y = 0; y <= 390; y += 40) {
 
             Line line = new Line(
@@ -292,17 +316,15 @@ public class AdminLoginScreen {
             );
         }
 
-        Circle outerCircle = new Circle(
-                190
-        );
+        Circle outerCircle =
+                new Circle(190);
 
         outerCircle.setFill(
                 Color.web("#3657C8", 0.08)
         );
 
-        Circle middleCircle = new Circle(
-                125
-        );
+        Circle middleCircle =
+                new Circle(125);
 
         middleCircle.setFill(
                 Color.TRANSPARENT
@@ -314,27 +336,24 @@ public class AdminLoginScreen {
 
         middleCircle.setStrokeWidth(1);
 
-        Circle innerCircle = new Circle(
-                70
-        );
+        Circle innerCircle =
+                new Circle(70);
 
         innerCircle.setFill(
                 Color.web("#3657C8", 0.18)
         );
 
-        StackPane circles = new StackPane(
-                outerCircle,
-                middleCircle,
-                innerCircle
-        );
+        StackPane circles =
+                new StackPane(
+                        outerCircle,
+                        middleCircle,
+                        innerCircle
+                );
 
-        circles.setTranslateY(
-                5
-        );
+        circles.setTranslateY(5);
 
-        Label adminIcon = new Label(
-                "ADMIN"
-        );
+        Label adminIcon =
+                new Label("ADMIN");
 
         adminIcon.setStyle(
                 "-fx-font-family: 'Arial';" +
@@ -367,31 +386,31 @@ public class AdminLoginScreen {
         return graphic;
     }
 
+    // ============================================================
+    // LOGIN PANEL
+    // ============================================================
+
     private static StackPane createLoginPanel(
             Stage stage
     ) {
 
         VBox card = new VBox();
 
-        card.setPrefWidth(
-                430
-        );
-
-        card.setMaxWidth(
-                430
-        );
+        card.setPrefWidth(430);
+        card.setMaxWidth(430);
 
         card.setPadding(
                 new Insets(35, 0, 25, 0)
         );
 
-        card.setSpacing(
-                10
-        );
+        card.setSpacing(10);
 
-        Label title = new Label(
-                "Admin Sign In"
-        );
+        // ========================================================
+        // HEADING
+        // ========================================================
+
+        Label title =
+                new Label("Admin Sign In");
 
         title.setStyle(
                 "-fx-font-family: 'Arial';" +
@@ -400,9 +419,10 @@ public class AdminLoginScreen {
                 "-fx-text-fill: #111827;"
         );
 
-        Label subtitle = new Label(
-                "Access the RentSathi administration panel"
-        );
+        Label subtitle =
+                new Label(
+                        "Access the RentSathi administration panel"
+                );
 
         subtitle.setStyle(
                 "-fx-font-family: 'Arial';" +
@@ -410,19 +430,23 @@ public class AdminLoginScreen {
                 "-fx-text-fill: " + DARK_BLUE + ";"
         );
 
-        VBox heading = new VBox(
-                6,
-                title,
-                subtitle
-        );
+        VBox heading =
+                new VBox(
+                        6,
+                        title,
+                        subtitle
+                );
 
         heading.setAlignment(
                 Pos.CENTER_LEFT
         );
 
-        Label emailLabel = new Label(
-                "Admin Email"
-        );
+        // ========================================================
+        // ADMIN EMAIL
+        // ========================================================
+
+        Label emailLabel =
+                new Label("Admin Email");
 
         emailLabel.setStyle(
                 "-fx-font-size: 13px;" +
@@ -430,60 +454,16 @@ public class AdminLoginScreen {
                 "-fx-text-fill: #111827;"
         );
 
-        TextField email = new TextField(
-                "admin@rentsathi"
+        TextField email =
+                new TextField();
+
+        email.setPromptText(
+                "Enter admin email"
         );
 
-        email.setPrefHeight(
-                45
-        );
+        email.setPrefHeight(45);
 
         email.setStyle(
-                "-fx-border-color: " + ERROR + ";" +
-                "-fx-border-width: 2px;" +
-                "-fx-border-radius: 7px;" +
-                "-fx-background-radius: 7px;" +
-                "-fx-font-size: 14px;" +
-                "-fx-padding: 0 12px;"
-        );
-
-        Label emailError = new Label(
-                "Please enter a valid email address."
-        );
-
-        emailError.setStyle(
-                "-fx-text-fill: " + ERROR + ";" +
-                "-fx-font-size: 13px;"
-        );
-
-        VBox emailBox = new VBox(
-                5,
-                emailLabel,
-                email,
-                emailError
-        );
-
-        Label passwordLabel = new Label(
-                "Password"
-        );
-
-        passwordLabel.setStyle(
-                "-fx-font-size: 13px;" +
-                "-fx-font-weight: bold;" +
-                "-fx-text-fill: #111827;"
-        );
-
-        PasswordField password = new PasswordField();
-
-        password.setText(
-                "password"
-        );
-
-        password.setPrefHeight(
-                45
-        );
-
-        password.setStyle(
                 "-fx-border-color: " + BORDER + ";" +
                 "-fx-border-width: 1px;" +
                 "-fx-border-radius: 7px;" +
@@ -492,9 +472,50 @@ public class AdminLoginScreen {
                 "-fx-padding: 0 12px;"
         );
 
-        Button forgot = new Button(
-                "Forgot Password"
+        // ========================================================
+        // EMAIL ERROR
+        // ========================================================
+
+        Label emailError =
+                new Label(
+                        "ⓘ Please enter a valid email address."
+                );
+
+        emailError.setStyle(
+                "-fx-text-fill: " + ERROR + ";" +
+                "-fx-font-size: 13px;"
         );
+
+        emailError.setVisible(false);
+        emailError.setManaged(false);
+
+        VBox emailBox =
+                new VBox(
+                        5,
+                        emailLabel,
+                        email,
+                        emailError
+                );
+
+        // ========================================================
+        // PASSWORD LABEL
+        // ========================================================
+
+        Label passwordLabel =
+                new Label("Password");
+
+        passwordLabel.setStyle(
+                "-fx-font-size: 13px;" +
+                "-fx-font-weight: bold;" +
+                "-fx-text-fill: #111827;"
+        );
+
+        // ========================================================
+        // FORGOT PASSWORD
+        // ========================================================
+
+        Button forgot =
+                new Button("Forgot Password");
 
         forgot.setStyle(
                 "-fx-background-color: transparent;" +
@@ -504,10 +525,11 @@ public class AdminLoginScreen {
                 "-fx-cursor: hand;"
         );
 
-        HBox passwordHeader = new HBox(
-                passwordLabel,
-                forgot
-        );
+        HBox passwordHeader =
+                new HBox(
+                        passwordLabel,
+                        forgot
+                );
 
         passwordHeader.setAlignment(
                 Pos.CENTER_LEFT
@@ -518,40 +540,198 @@ public class AdminLoginScreen {
                 new Insets(0, 0, 0, 270)
         );
 
-        VBox passwordBox = new VBox(
-                6,
-                passwordHeader,
-                password
+        // ========================================================
+        // PASSWORD FIELD
+        // ========================================================
+
+        PasswordField password =
+                new PasswordField();
+
+        password.setPromptText(
+                "Enter your password"
         );
 
-        CheckBox remember = new CheckBox(
-                "Remember this device"
+        password.setPrefHeight(45);
+
+        password.setStyle(
+                "-fx-border-color: " + BORDER + ";" +
+                "-fx-border-width: 1px;" +
+                "-fx-border-radius: 7px;" +
+                "-fx-background-radius: 7px;" +
+                "-fx-font-size: 14px;" +
+                "-fx-padding: 0 45px 0 12px;"
         );
+
+        // ========================================================
+        // VISIBLE PASSWORD FIELD
+        // ========================================================
+
+        TextField visiblePassword =
+                new TextField();
+
+        visiblePassword.setPromptText(
+                "Enter your password"
+        );
+
+        visiblePassword.setPrefHeight(45);
+
+        visiblePassword.setStyle(
+                "-fx-border-color: " + BORDER + ";" +
+                "-fx-border-width: 1px;" +
+                "-fx-border-radius: 7px;" +
+                "-fx-background-radius: 7px;" +
+                "-fx-font-size: 14px;" +
+                "-fx-padding: 0 45px 0 12px;"
+        );
+
+        visiblePassword.setVisible(false);
+        visiblePassword.setManaged(false);
+
+        // Keep both fields synchronized
+        visiblePassword.textProperty()
+                .bindBidirectional(
+                        password.textProperty()
+                );
+
+        // ========================================================
+        // VIEW PASSWORD BUTTON
+        // ========================================================
+
+        Button passwordToggleButton =
+                new Button("👁");
+
+        passwordToggleButton.setFocusTraversable(
+                false
+        );
+
+        passwordToggleButton.setStyle(
+                "-fx-background-color: transparent;" +
+                "-fx-font-size: 16px;" +
+                "-fx-cursor: hand;"
+        );
+
+        // ========================================================
+        // PASSWORD FIELD CONTAINER
+        // ========================================================
+
+        StackPane passwordFieldBox =
+                new StackPane();
+
+        passwordFieldBox.setPrefHeight(45);
+
+        passwordFieldBox.getChildren().addAll(
+                password,
+                visiblePassword,
+                passwordToggleButton
+        );
+
+        StackPane.setAlignment(
+                passwordToggleButton,
+                Pos.CENTER_RIGHT
+        );
+
+        StackPane.setMargin(
+                passwordToggleButton,
+                new Insets(0, 8, 0, 0)
+        );
+
+        // ========================================================
+        // SHOW / HIDE PASSWORD
+        // ========================================================
+
+        passwordToggleButton.setOnAction(
+                event -> {
+
+                    if (visiblePassword.isVisible()) {
+
+                        // Hide password
+                        visiblePassword.setVisible(false);
+                        visiblePassword.setManaged(false);
+
+                        password.setVisible(true);
+                        password.setManaged(true);
+
+                        passwordToggleButton.setText(
+                                "👁"
+                        );
+
+                    } else {
+
+                        // Show password
+                        password.setVisible(false);
+                        password.setManaged(false);
+
+                        visiblePassword.setVisible(true);
+                        visiblePassword.setManaged(true);
+
+                        passwordToggleButton.setText(
+                                "🙈"
+                        );
+                    }
+                }
+        );
+
+        // ========================================================
+        // PASSWORD BOX
+        // ========================================================
+
+        VBox passwordBox =
+                new VBox(
+                        6,
+                        passwordHeader,
+                        passwordFieldBox
+                );
+
+        // ========================================================
+        // LOGIN ERROR
+        // ========================================================
+
+        Label loginError =
+                new Label();
+
+        loginError.setStyle(
+                "-fx-text-fill: " + ERROR + ";" +
+                "-fx-font-size: 13px;"
+        );
+
+        loginError.setVisible(false);
+        loginError.setManaged(false);
+
+        // ========================================================
+        // REMEMBER ME
+        // ========================================================
+
+        CheckBox remember =
+                new CheckBox(
+                        "Remember this device"
+                );
 
         remember.setStyle(
                 "-fx-font-size: 13px;" +
                 "-fx-text-fill: " + DARK_BLUE + ";"
         );
 
-        HBox options = new HBox(
-                remember
-        );
+        HBox options =
+                new HBox(
+                        remember
+                );
 
         options.setAlignment(
                 Pos.CENTER_LEFT
         );
 
-        Button login = new Button(
-                "Secure Login"
-        );
+        // ========================================================
+        // LOGIN BUTTON
+        // ========================================================
+
+        Button login =
+                new Button("Secure Login");
 
         login.setMaxWidth(
                 Double.MAX_VALUE
         );
 
-        login.setPrefHeight(
-                45
-        );
+        login.setPrefHeight(45);
 
         login.setStyle(
                 "-fx-background-color: " + BLUE + ";" +
@@ -562,9 +742,148 @@ public class AdminLoginScreen {
                 "-fx-cursor: hand;"
         );
 
-        Label protectedText = new Label(
-                "🔒  Protected Administrator Access"
-        );
+        // ========================================================
+        // FIREBASE AUTHENTICATION
+        // ========================================================
+
+        login.setOnAction(event -> {
+
+            System.out.println(
+                    "ADMIN LOGIN BUTTON CLICKED"
+            );
+
+            String emailText =
+                    email.getText().trim();
+
+            String passwordText =
+                    password.getText();
+
+            // ----------------------------------------------------
+            // Hide previous errors
+            // ----------------------------------------------------
+
+            emailError.setVisible(false);
+            emailError.setManaged(false);
+
+            loginError.setVisible(false);
+            loginError.setManaged(false);
+
+            // ----------------------------------------------------
+            // Validate email
+            // ----------------------------------------------------
+
+            if (emailText.isEmpty()) {
+
+                emailError.setText(
+                        "ⓘ Please enter your admin email."
+                );
+
+                emailError.setVisible(true);
+                emailError.setManaged(true);
+
+                return;
+            }
+
+            // ----------------------------------------------------
+            // Basic email validation
+            // ----------------------------------------------------
+
+            if (!emailText.contains("@")) {
+
+                emailError.setText(
+                        "ⓘ Please enter a valid email address."
+                );
+
+                emailError.setVisible(true);
+                emailError.setManaged(true);
+
+                return;
+            }
+
+            // ----------------------------------------------------
+            // Validate password
+            // ----------------------------------------------------
+
+            if (passwordText.isEmpty()) {
+
+                loginError.setText(
+                        "ⓘ Please enter your password."
+                );
+
+                loginError.setVisible(true);
+                loginError.setManaged(true);
+
+                return;
+            }
+
+            // ----------------------------------------------------
+            // Disable login button
+            // ----------------------------------------------------
+
+            login.setDisable(true);
+
+            login.setText(
+                    "Logging in..."
+            );
+
+            // ----------------------------------------------------
+            // Firebase Login
+            // ----------------------------------------------------
+
+            boolean success =
+                    FirebaseAuthService.login(
+                            emailText,
+                            passwordText
+                    );
+
+            // ----------------------------------------------------
+            // LOGIN SUCCESS
+            // ----------------------------------------------------
+
+            if (success) {
+
+                System.out.println(
+                        "ADMIN LOGIN SUCCESSFUL"
+                );
+
+                AdminDashboardScreen.show(
+                        stage
+                );
+            }
+
+            // ----------------------------------------------------
+            // LOGIN FAILED
+            // ----------------------------------------------------
+
+            else {
+
+                System.out.println(
+                        "ADMIN LOGIN FAILED"
+                );
+
+                loginError.setText(
+                        "ⓘ Invalid admin email or password. Please try again."
+                );
+
+                loginError.setVisible(true);
+                loginError.setManaged(true);
+
+                login.setDisable(false);
+
+                login.setText(
+                        "Secure Login"
+                );
+            }
+        });
+
+        // ========================================================
+        // PROTECTED TEXT
+        // ========================================================
+
+        Label protectedText =
+                new Label(
+                        "🔒  Protected Administrator Access"
+                );
 
         protectedText.setStyle(
                 "-fx-font-size: 13px;" +
@@ -579,20 +898,30 @@ public class AdminLoginScreen {
                 Double.MAX_VALUE
         );
 
-        Line separator = new Line(
-                0,
-                0,
-                430,
-                0
-        );
+        // ========================================================
+        // SEPARATOR
+        // ========================================================
+
+        Line separator =
+                new Line(
+                        0,
+                        0,
+                        430,
+                        0
+                );
 
         separator.setStroke(
                 Color.web(BORDER)
         );
 
-        Button back = new Button(
-                "← Back to Role Selection"
-        );
+        // ========================================================
+        // BACK BUTTON
+        // ========================================================
+
+        Button back =
+                new Button(
+                        "← Back to Role Selection"
+                );
 
         back.setStyle(
                 "-fx-background-color: transparent;" +
@@ -602,14 +931,20 @@ public class AdminLoginScreen {
         );
 
         back.setOnAction(
-                event -> WelcomeScreen.show(stage)
+                event ->
+                        WelcomeScreen.show(stage)
         );
+
+        // ========================================================
+        // ADD ALL COMPONENTS
+        // ========================================================
 
         card.getChildren().addAll(
                 heading,
                 new VBox(20),
                 emailBox,
                 passwordBox,
+                loginError,
                 options,
                 login,
                 protectedText,
@@ -617,9 +952,12 @@ public class AdminLoginScreen {
                 back
         );
 
-        StackPane container = new StackPane(
-                card
-        );
+        // ========================================================
+        // CONTAINER
+        // ========================================================
+
+        StackPane container =
+                new StackPane(card);
 
         container.setAlignment(
                 Pos.CENTER

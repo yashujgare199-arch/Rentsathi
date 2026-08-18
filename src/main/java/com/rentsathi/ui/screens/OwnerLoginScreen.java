@@ -1,5 +1,8 @@
 package com.rentsathi.ui.screens;
 
+import com.rentsathi.firebase.authentication.FirebaseAuthService;
+import com.rentsathi.ui.screens.owner.OwnerDashboardScreen;
+
 import java.io.File;
 import java.net.URL;
 
@@ -29,6 +32,11 @@ public class OwnerLoginScreen {
     private static final String PURPLE = "#7166E8";
     private static final String BACKGROUND = "#F8F8FD";
     private static final String BORDER = "#C8CBD9";
+    private static final String ERROR = "#D32F2F";
+
+    // ============================================================
+    // SHOW OWNER LOGIN SCREEN
+    // ============================================================
 
     public static void show(Stage stage) {
 
@@ -95,6 +103,10 @@ public class OwnerLoginScreen {
         stage.show();
     }
 
+    // ============================================================
+    // LEFT PANEL
+    // ============================================================
+
     private static VBox createLeftPanel() {
 
         VBox panel = new VBox();
@@ -118,15 +130,15 @@ public class OwnerLoginScreen {
         ImageView illustration = createIllustration();
 
         VBox imageBox = new VBox(
-            illustration
+                illustration
         );
 
         imageBox.setAlignment(
-            Pos.CENTER
+                Pos.CENTER
         );
 
         imageBox.setPadding(
-            new Insets(120, 0, 0, 0)
+                new Insets(120, 0, 0, 0)
         );
 
         imageBox.setMinHeight(400);
@@ -190,6 +202,10 @@ public class OwnerLoginScreen {
         return panel;
     }
 
+    // ============================================================
+    // BRAND
+    // ============================================================
+
     private static HBox createBrand() {
 
         Image image = loadImage(
@@ -242,10 +258,14 @@ public class OwnerLoginScreen {
         return brand;
     }
 
+    // ============================================================
+    // ILLUSTRATION
+    // ============================================================
+
     private static ImageView createIllustration() {
 
         Image image = loadImage(
-            "/images/owner-login-illustration.png"
+                "/images/owner-login-illustration.png"
         );
 
         ImageView imageView = new ImageView(image);
@@ -257,6 +277,10 @@ public class OwnerLoginScreen {
         return imageView;
     }
 
+    // ============================================================
+    // LOAD IMAGE
+    // ============================================================
+
     private static Image loadImage(
             String resourcePath
     ) {
@@ -265,6 +289,7 @@ public class OwnerLoginScreen {
                 .getResource(resourcePath);
 
         if (resource != null) {
+
             return new Image(
                     resource.toExternalForm()
             );
@@ -280,6 +305,7 @@ public class OwnerLoginScreen {
         );
 
         if (file.exists()) {
+
             return new Image(
                     file.toURI().toString()
             );
@@ -287,9 +313,14 @@ public class OwnerLoginScreen {
 
         throw new RuntimeException(
                 "Resource not found: " + resourcePath +
-                "\nExpected file: " + file.getAbsolutePath()
+                "\nExpected file: " +
+                file.getAbsolutePath()
         );
     }
+
+    // ============================================================
+    // LOGIN PANEL
+    // ============================================================
 
     private static StackPane createLoginPanel(
             Stage stage
@@ -305,6 +336,10 @@ public class OwnerLoginScreen {
         card.setPadding(
                 new Insets(32, 0, 25, 0)
         );
+
+        // ========================================================
+        // HEADING
+        // ========================================================
 
         Label title = new Label(
                 "Owner Sign In"
@@ -337,6 +372,10 @@ public class OwnerLoginScreen {
                 Pos.CENTER_LEFT
         );
 
+        // ========================================================
+        // EMAIL
+        // ========================================================
+
         Label emailLabel = new Label(
                 "Email Address"
         );
@@ -347,9 +386,11 @@ public class OwnerLoginScreen {
                 "-fx-text-fill: #111827;"
         );
 
-        TextField email = new TextField(
-                "owner@rentsathi.com"
-        );
+        TextField email = new TextField();
+                email.setPromptText("Enter your mail");
+                email.setPrefHeight(38);
+                
+        
 
         email.setPrefHeight(45);
 
@@ -368,6 +409,10 @@ public class OwnerLoginScreen {
                 email
         );
 
+        // ========================================================
+        // PASSWORD LABEL
+        // ========================================================
+
         Label passwordLabel = new Label(
                 "Password"
         );
@@ -378,10 +423,14 @@ public class OwnerLoginScreen {
                 "-fx-text-fill: #111827;"
         );
 
+        // ========================================================
+        // PASSWORD FIELD
+        // ========================================================
+
         PasswordField password = new PasswordField();
 
-        password.setText(
-                "password123"
+        password.setPromptText(
+                "Enter your password"
         );
 
         password.setPrefHeight(45);
@@ -392,14 +441,141 @@ public class OwnerLoginScreen {
                 "-fx-border-radius: 7px;" +
                 "-fx-background-radius: 7px;" +
                 "-fx-font-size: 14px;" +
-                "-fx-padding: 0 12px;"
+                "-fx-padding: 0 45px 0 12px;"
         );
+
+        // ========================================================
+        // VISIBLE PASSWORD FIELD
+        // ========================================================
+
+        TextField visiblePassword = new TextField();
+
+        visiblePassword.setPromptText(
+                "Enter your password"
+        );
+
+        visiblePassword.setPrefHeight(45);
+
+        visiblePassword.setStyle(
+                "-fx-border-color: " + BORDER + ";" +
+                "-fx-border-width: 1px;" +
+                "-fx-border-radius: 7px;" +
+                "-fx-background-radius: 7px;" +
+                "-fx-font-size: 14px;" +
+                "-fx-padding: 0 45px 0 12px;"
+        );
+
+        visiblePassword.setVisible(false);
+        visiblePassword.setManaged(false);
+
+        // Keep both password fields synchronized
+        visiblePassword.textProperty()
+                .bindBidirectional(
+                        password.textProperty()
+                );
+
+        // ========================================================
+        // PASSWORD VIEW BUTTON
+        // ========================================================
+
+        Button passwordToggleButton =
+                new Button("👁");
+
+        passwordToggleButton.setFocusTraversable(false);
+
+        passwordToggleButton.setStyle(
+                "-fx-background-color: transparent;" +
+                "-fx-font-size: 16px;" +
+                "-fx-cursor: hand;"
+        );
+
+        // ========================================================
+        // PASSWORD FIELD CONTAINER
+        // ========================================================
+
+        StackPane passwordFieldBox =
+                new StackPane();
+
+        passwordFieldBox.setPrefHeight(45);
+
+        passwordFieldBox.getChildren().addAll(
+                password,
+                visiblePassword,
+                passwordToggleButton
+        );
+
+        StackPane.setAlignment(
+                passwordToggleButton,
+                Pos.CENTER_RIGHT
+        );
+
+        StackPane.setMargin(
+                passwordToggleButton,
+                new Insets(0, 8, 0, 0)
+        );
+
+        // ========================================================
+        // SHOW / HIDE PASSWORD
+        // ========================================================
+
+        passwordToggleButton.setOnAction(
+                event -> {
+
+                    if (visiblePassword.isVisible()) {
+
+                        // Hide password
+                        visiblePassword.setVisible(false);
+                        visiblePassword.setManaged(false);
+
+                        password.setVisible(true);
+                        password.setManaged(true);
+
+                        passwordToggleButton.setText("👁");
+
+                    } else {
+
+                        // Show password
+                        password.setVisible(false);
+                        password.setManaged(false);
+
+                        visiblePassword.setVisible(true);
+                        visiblePassword.setManaged(true);
+
+                        passwordToggleButton.setText("🙈");
+                    }
+                }
+        );
+
+        // ========================================================
+        // PASSWORD BOX
+        // ========================================================
 
         VBox passwordBox = new VBox(
                 6,
                 passwordLabel,
-                password
+                passwordFieldBox
         );
+
+        // ========================================================
+        // LOGIN ERROR
+        // ========================================================
+        // IMPORTANT:
+        // This was missing in your previous code.
+        // The login button uses this variable.
+
+        Label loginError = new Label();
+
+        loginError.setStyle(
+                "-fx-text-fill: " + ERROR + ";" +
+                "-fx-font-size: 13px;"
+        );
+
+        loginError.setVisible(false);
+        loginError.setManaged(false);
+
+        // ========================================================
+        // REMEMBER ME
+        // ========================================================
 
         CheckBox remember = new CheckBox(
                 "Remember me"
@@ -409,6 +585,10 @@ public class OwnerLoginScreen {
                 "-fx-font-size: 13px;" +
                 "-fx-text-fill: " + DARK_BLUE + ";"
         );
+
+        // ========================================================
+        // FORGOT PASSWORD
+        // ========================================================
 
         Button forgot = new Button(
                 "Forgot Password?"
@@ -436,6 +616,10 @@ public class OwnerLoginScreen {
                 new Insets(0, 0, 0, 165)
         );
 
+        // ========================================================
+        // LOGIN BUTTON
+        // ========================================================
+
         Button login = new Button(
                 "Login   →"
         );
@@ -455,7 +639,131 @@ public class OwnerLoginScreen {
                 "-fx-cursor: hand;"
         );
 
+        // ========================================================
+        // LOGIN ACTION
+        // ========================================================
+
+        login.setOnAction(event -> {
+
+            System.out.println(
+                    "OWNER LOGIN BUTTON CLICKED"
+            );
+
+            String emailText =
+                    email.getText().trim();
+
+            String passwordText =
+                    password.getText();
+
+            // ----------------------------------------------------
+            // Hide previous error
+            // ----------------------------------------------------
+
+            loginError.setVisible(false);
+            loginError.setManaged(false);
+
+            // ----------------------------------------------------
+            // Validate email
+            // ----------------------------------------------------
+
+            if (emailText.isEmpty()) {
+
+                loginError.setText(
+                        "ⓘ Please enter your email address."
+                );
+
+                loginError.setVisible(true);
+                loginError.setManaged(true);
+
+                return;
+            }
+
+            // ----------------------------------------------------
+            // Validate password
+            // ----------------------------------------------------
+
+            if (passwordText.isEmpty()) {
+
+                loginError.setText(
+                        "ⓘ Please enter your password."
+                );
+
+                loginError.setVisible(true);
+                loginError.setManaged(true);
+
+                return;
+            }
+
+            // ----------------------------------------------------
+            // Disable login button
+            // ----------------------------------------------------
+
+            login.setDisable(true);
+
+            login.setText(
+                    "Logging in..."
+            );
+
+            // ----------------------------------------------------
+            // Firebase Authentication
+            // ----------------------------------------------------
+
+            boolean success =
+                    FirebaseAuthService.login(
+                            emailText,
+                            passwordText
+                    );
+
+            // ----------------------------------------------------
+            // LOGIN SUCCESS
+            // ----------------------------------------------------
+
+            if (success) {
+
+                System.out.println(
+                        "OWNER LOGIN SUCCESSFUL"
+                );
+
+                OwnerDashboardScreen.show(
+                        stage
+                );
+
+            }
+
+            // ----------------------------------------------------
+            // LOGIN FAILED
+            // ----------------------------------------------------
+
+            else {
+
+                System.out.println(
+                        "OWNER LOGIN FAILED"
+                );
+
+                loginError.setText(
+                        "ⓘ Invalid email or password. Please try again."
+                );
+
+                loginError.setVisible(true);
+                loginError.setManaged(true);
+
+                login.setDisable(false);
+
+                login.setText(
+                        "Login   →"
+                );
+            }
+        });
+
+        // ========================================================
+        // SEPARATOR
+        // ========================================================
+
         HBox separator = createSeparator();
+
+        // ========================================================
+        // CREATE ACCOUNT
+        // ========================================================
 
         Label accountText = new Label(
                 "Don't have an owner account?"
@@ -478,6 +786,11 @@ public class OwnerLoginScreen {
                 "-fx-cursor: hand;"
         );
 
+        createAccount.setOnAction(
+                event ->
+                        new OwnerCreateScreen(stage).show()
+        );
+
         HBox account = new HBox(
                 5,
                 accountText,
@@ -487,6 +800,10 @@ public class OwnerLoginScreen {
         account.setAlignment(
                 Pos.CENTER
         );
+
+        // ========================================================
+        // BACK BUTTON
+        // ========================================================
 
         Button back = new Button(
                 "← Back to Role Selection"
@@ -500,14 +817,20 @@ public class OwnerLoginScreen {
         );
 
         back.setOnAction(
-                event -> WelcomeScreen.show(stage)
+                event ->
+                        WelcomeScreen.show(stage)
         );
+
+        // ========================================================
+        // ADD EVERYTHING TO CARD
+        // ========================================================
 
         card.getChildren().addAll(
                 heading,
                 new VBox(25),
                 emailBox,
                 passwordBox,
+                loginError,
                 options,
                 login,
                 separator,
@@ -515,9 +838,12 @@ public class OwnerLoginScreen {
                 back
         );
 
-        StackPane container = new StackPane(
-                card
-        );
+        // ========================================================
+        // CONTAINER
+        // ========================================================
+
+        StackPane container =
+                new StackPane(card);
 
         container.setAlignment(
                 Pos.CENTER
@@ -529,6 +855,10 @@ public class OwnerLoginScreen {
 
         return container;
     }
+
+    // ============================================================
+    // SEPARATOR
+    // ============================================================
 
     private static HBox createSeparator() {
 
