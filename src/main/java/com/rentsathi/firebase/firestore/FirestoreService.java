@@ -1,6 +1,7 @@
 package com.rentsathi.firebase.firestore;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.rentsathi.firebase.FirebaseConfig;
@@ -14,380 +15,544 @@ import java.net.http.HttpResponse;
 
 public class FirestoreService {
 
-    private static final HttpClient CLIENT =
-            HttpClient.newHttpClient();
+        private static final HttpClient CLIENT = HttpClient.newHttpClient();
 
-    private static final Gson GSON =
-            new Gson();
+        private static final Gson GSON = new Gson();
 
-    // ============================================================
-    // CREATE DOCUMENT
-    // ============================================================
+        // ============================================================
+        // CREATE DOCUMENT
+        // ============================================================
 
-    public static boolean createDocument(
-            String collection,
-            String documentId,
-            JsonObject fields) {
+        // ============================================================
+        // CREATE DOCUMENT
+        // ============================================================
 
-        if (!FirebaseSession.isLoggedIn()) {
-            System.out.println("User is not logged in.");
-            return false;
+        public static boolean createDocument(
+                        String collection,
+                        String documentId,
+                        JsonObject fields) {
+
+                if (!FirebaseSession.isLoggedIn()) {
+
+                        System.out.println(
+                                        "User is not logged in.");
+
+                        return false;
+                }
+
+                try {
+
+                        // --------------------------------------------------------
+                        // FIRESTORE CREATE DOCUMENT URL
+                        // --------------------------------------------------------
+
+                        String url = FirebaseConfig.FIRESTORE_BASE_URL
+                                        + "/projects/"
+                                        + FirebaseConfig.PROJECT_ID
+                                        + "/databases/(default)/documents/"
+                                        + collection
+                                        + "?documentId="
+                                        + documentId;
+
+                        System.out.println(
+                                        "Firestore Create URL: "
+                                                        + url);
+
+                        // --------------------------------------------------------
+                        // REQUEST BODY
+                        // --------------------------------------------------------
+
+                        JsonObject body = new JsonObject();
+
+                        body.add(
+                                        "fields",
+                                        fields);
+
+                        // --------------------------------------------------------
+                        // HTTP REQUEST
+                        // --------------------------------------------------------
+
+                        HttpRequest request = HttpRequest.newBuilder()
+                                        .uri(
+                                                        URI.create(url))
+                                        .header(
+                                                        "Content-Type",
+                                                        "application/json")
+                                        .header(
+                                                        "Authorization",
+                                                        "Bearer "
+                                                                        + FirebaseSession
+                                                                                        .getIdToken())
+                                        .POST(
+                                                        HttpRequest.BodyPublishers
+                                                                        .ofString(
+                                                                                        GSON.toJson(body)))
+                                        .build();
+
+                        // --------------------------------------------------------
+                        // SEND REQUEST
+                        // --------------------------------------------------------
+
+                        HttpResponse<String> response = CLIENT.send(
+                                        request,
+                                        HttpResponse.BodyHandlers
+                                                        .ofString());
+
+                        // --------------------------------------------------------
+                        // SUCCESS
+                        // --------------------------------------------------------
+
+                        if (response.statusCode() == 200) {
+
+                                System.out.println(
+                                                "Document created successfully.");
+
+                                System.out.println(
+                                                response.body());
+
+                                return true;
+                        }
+
+                        // --------------------------------------------------------
+                        // ERROR
+                        // --------------------------------------------------------
+
+                        System.out.println(
+                                        "Firestore Create Error:");
+
+                        System.out.println(
+                                        "HTTP Status: "
+                                                        + response.statusCode());
+
+                        System.out.println(
+                                        response.body());
+
+                        return false;
+
+                } catch (
+                                IOException | InterruptedException e) {
+
+                        System.out.println(
+                                        "======================================");
+
+                        System.out.println(
+                                        "FIRESTORE CONNECTION ERROR");
+
+                        System.out.println(
+                                        "======================================");
+
+                        System.out.println(
+                                        "Error type: "
+                                                        + e.getClass()
+                                                                        .getName());
+
+                        System.out.println(
+                                        "Error message: "
+                                                        + e.getMessage());
+
+                        e.printStackTrace();
+
+                        System.out.println(
+                                        "======================================");
+
+                        return false;
+                }
         }
 
-        try {
+        // ============================================================
+        // GET DOCUMENT
+        // ============================================================
 
-            String url =
-                    FirebaseConfig.FIRESTORE_BASE_URL
-                            + "/projects/"
-                            + FirebaseConfig.PROJECT_ID
-                            + "/databases/(default)/documents/"
-                            + collection
-                            + "/"
-                            + documentId;
+        public static JsonObject getDocument(
+                        String collection,
+                        String documentId) {
 
-            JsonObject body = new JsonObject();
+                if (!FirebaseSession.isLoggedIn()) {
+                        System.out.println("User is not logged in.");
+                        return null;
+                }
 
-            body.add("fields", fields);
+                try {
 
-            HttpRequest request =
-                    HttpRequest.newBuilder()
-                            .uri(URI.create(url))
-                            .header(
-                                    "Content-Type",
-                                    "application/json"
-                            )
-                            .header(
-                                    "Authorization",
-                                    "Bearer "
-                                            + FirebaseSession.getIdToken()
-                            )
-                            .PUT(
-                                    HttpRequest.BodyPublishers.ofString(
-                                            GSON.toJson(body)
-                                    )
-                            )
-                            .build();
+                        String url = FirebaseConfig.FIRESTORE_BASE_URL
+                                        + "/projects/"
+                                        + FirebaseConfig.PROJECT_ID
+                                        + "/databases/(default)/documents/"
+                                        + collection
+                                        + "/"
+                                        + documentId;
+                        System.out.println(
+                                        "Firestore URL: " + url);
 
-            HttpResponse<String> response =
-                    CLIENT.send(
-                            request,
-                            HttpResponse.BodyHandlers.ofString()
-                    );
+                        HttpRequest request = HttpRequest.newBuilder()
+                                        .uri(URI.create(url))
+                                        .header(
+                                                        "Authorization",
+                                                        "Bearer "
+                                                                        + FirebaseSession.getIdToken())
+                                        .GET()
+                                        .build();
 
-            if (response.statusCode() == 200) {
+                        HttpResponse<String> response = CLIENT.send(
+                                        request,
+                                        HttpResponse.BodyHandlers.ofString());
 
-                System.out.println(
-                        "Document created successfully."
-                );
+                        if (response.statusCode() == 200) {
 
-                return true;
-            }
+                                return JsonParser
+                                                .parseString(response.body())
+                                                .getAsJsonObject();
+                        }
 
-            System.out.println(
-                    "Firestore Create Error:"
-            );
+                        System.out.println(
+                                        "Firestore Get Error:");
 
-            System.out.println(
-                    response.body()
-            );
+                        System.out.println(
+                                        response.body());
 
-            return false;
+                        return null;
 
-        } catch (IOException | InterruptedException e) {
+                } catch (IOException | InterruptedException e) {
 
-            e.printStackTrace();
+                        e.printStackTrace();
 
-            return false;
-        }
-    }
-
-    // ============================================================
-    // GET DOCUMENT
-    // ============================================================
-
-    public static JsonObject getDocument(
-            String collection,
-            String documentId) {
-
-        if (!FirebaseSession.isLoggedIn()) {
-            System.out.println("User is not logged in.");
-            return null;
+                        return null;
+                }
         }
 
-        try {
+        // ============================================================
+        // UPDATE DOCUMENT
+        // ============================================================
 
-            String url =
-                    FirebaseConfig.FIRESTORE_BASE_URL
-                            + "/projects/"
-                            + FirebaseConfig.PROJECT_ID
-                            + "/databases/(default)/documents/"
-                            + collection
-                            + "/"
-                            + documentId;
+        public static boolean updateDocument(
+                        String collection,
+                        String documentId,
+                        JsonObject fields) {
 
-            HttpRequest request =
-                    HttpRequest.newBuilder()
-                            .uri(URI.create(url))
-                            .header(
-                                    "Authorization",
-                                    "Bearer "
-                                            + FirebaseSession.getIdToken()
-                            )
-                            .GET()
-                            .build();
+                if (!FirebaseSession.isLoggedIn()) {
+                        System.out.println("User is not logged in.");
+                        return false;
+                }
 
-            HttpResponse<String> response =
-                    CLIENT.send(
-                            request,
-                            HttpResponse.BodyHandlers.ofString()
-                    );
+                try {
 
-            if (response.statusCode() == 200) {
+                        StringBuilder urlBuilder = new StringBuilder();
 
-                return JsonParser
-                        .parseString(response.body())
-                        .getAsJsonObject();
-            }
+                        urlBuilder.append(
+                                        FirebaseConfig.FIRESTORE_BASE_URL)
+                                        .append("/projects/")
+                                        .append(FirebaseConfig.PROJECT_ID)
+                                        .append("/databases/(default)/documents/")
+                                        .append(collection)
+                                        .append("/")
+                                        .append(documentId);
 
-            System.out.println(
-                    "Firestore Get Error:"
-            );
+                        /*
+                         * Update only the fields provided.
+                         *
+                         * This prevents Firestore from replacing
+                         * the complete document.
+                         */
+                        for (String fieldName : fields.keySet()) {
 
-            System.out.println(
-                    response.body()
-            );
+                                if (urlBuilder.indexOf("?") == -1) {
+                                        urlBuilder.append("?updateMask.fieldPaths=")
+                                                        .append(fieldName);
+                                } else {
+                                        urlBuilder.append("&updateMask.fieldPaths=")
+                                                        .append(fieldName);
+                                }
+                        }
 
-            return null;
+                        String url = urlBuilder.toString();
 
-        } catch (IOException | InterruptedException e) {
+                        System.out.println(
+                                        "Firestore Update URL: " + url);
 
-            e.printStackTrace();
+                        JsonObject body = new JsonObject();
 
-            return null;
-        }
-    }
+                        body.add(
+                                        "fields",
+                                        fields);
 
-    // ============================================================
-    // UPDATE DOCUMENT
-    // ============================================================
+                        HttpRequest request = HttpRequest.newBuilder()
+                                        .uri(URI.create(url))
+                                        .header(
+                                                        "Content-Type",
+                                                        "application/json")
+                                        .header(
+                                                        "Authorization",
+                                                        "Bearer "
+                                                                        + FirebaseSession.getIdToken())
+                                        .method(
+                                                        "PATCH",
+                                                        HttpRequest.BodyPublishers.ofString(
+                                                                        GSON.toJson(body)))
+                                        .build();
 
-    public static boolean updateDocument(
-            String collection,
-            String documentId,
-            JsonObject fields) {
+                        HttpResponse<String> response = CLIENT.send(
+                                        request,
+                                        HttpResponse.BodyHandlers.ofString());
 
-        if (!FirebaseSession.isLoggedIn()) {
-            System.out.println("User is not logged in.");
-            return false;
-        }
+                        if (response.statusCode() == 200) {
 
-        try {
+                                System.out.println(
+                                                "Document updated successfully.");
 
-            String url =
-                    FirebaseConfig.FIRESTORE_BASE_URL
-                            + "/projects/"
-                            + FirebaseConfig.PROJECT_ID
-                            + "/databases/(default)/documents/"
-                            + collection
-                            + "/"
-                            + documentId;
+                                return true;
+                        }
 
-        JsonObject body = new JsonObject();
+                        System.out.println(
+                                        "Firestore Update Error:");
 
-        body.add("fields", fields);
+                        System.out.println(
+                                        "HTTP Status: "
+                                                        + response.statusCode());
 
-        HttpRequest request =
-                HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .header(
-                        "Content-Type",
-                        "application/json"
-                )
-                .header(
-                        "Authorization",
-                        "Bearer " + FirebaseSession.getIdToken()
-                )
-                .method(
-                        "PATCH",
-                        HttpRequest.BodyPublishers.ofString(
-                                GSON.toJson(body)
-                        )
-                )
-                .build();
+                        System.out.println(
+                                        response.body());
 
-            HttpResponse<String> response =
-                    CLIENT.send(
-                            request,
-                            HttpResponse.BodyHandlers.ofString()
-                    );
+                        return false;
 
-            if (response.statusCode() == 200) {
+                } catch (
+                                IOException | InterruptedException e) {
 
-                System.out.println(
-                        "Document updated successfully."
-                );
+                        e.printStackTrace();
 
-                return true;
-            }
-
-            System.out.println(
-                    "Firestore Update Error:"
-            );
-
-            System.out.println(
-                    response.body()
-            );
-
-            return false;
-
-        } catch (IOException | InterruptedException e) {
-
-            e.printStackTrace();
-
-            return false;
-        }
-    }
-
-    // ============================================================
-    // DELETE DOCUMENT
-    // ============================================================
-
-    public static boolean deleteDocument(
-            String collection,
-            String documentId) {
-
-        if (!FirebaseSession.isLoggedIn()) {
-            System.out.println("User is not logged in.");
-            return false;
+                        return false;
+                }
         }
 
-        try {
+        // ============================================================
+        // DELETE DOCUMENT
+        // ============================================================
 
-            String url =
-                    FirebaseConfig.FIRESTORE_BASE_URL
-                            + "/projects/"
-                            + FirebaseConfig.PROJECT_ID
-                            + "/databases/(default)/documents/"
-                            + collection
-                            + "/"
-                            + documentId;
+        public static boolean deleteDocument(
+                        String collection,
+                        String documentId) {
 
-            HttpRequest request =
-                    HttpRequest.newBuilder()
-                            .uri(URI.create(url))
-                            .header(
-                                    "Authorization",
-                                    "Bearer "
-                                            + FirebaseSession.getIdToken()
-                            )
-                            .DELETE()
-                            .build();
+                if (!FirebaseSession.isLoggedIn()) {
+                        System.out.println("User is not logged in.");
+                        return false;
+                }
 
-            HttpResponse<String> response =
-                    CLIENT.send(
-                            request,
-                            HttpResponse.BodyHandlers.ofString()
-                    );
+                try {
 
-            if (response.statusCode() == 200) {
+                        String url = FirebaseConfig.FIRESTORE_BASE_URL
+                                        + "/projects/"
+                                        + FirebaseConfig.PROJECT_ID
+                                        + "/databases/(default)/documents/"
+                                        + collection
+                                        + "/"
+                                        + documentId;
 
-                System.out.println(
-                        "Document deleted successfully."
-                );
+                        HttpRequest request = HttpRequest.newBuilder()
+                                        .uri(URI.create(url))
+                                        .header(
+                                                        "Authorization",
+                                                        "Bearer "
+                                                                        + FirebaseSession.getIdToken())
+                                        .DELETE()
+                                        .build();
 
-                return true;
-            }
+                        HttpResponse<String> response = CLIENT.send(
+                                        request,
+                                        HttpResponse.BodyHandlers.ofString());
 
-            System.out.println(
-                    "Firestore Delete Error:"
-            );
+                        if (response.statusCode() == 200) {
 
-            System.out.println(
-                    response.body()
-            );
+                                System.out.println(
+                                                "Document deleted successfully.");
 
-            return false;
+                                return true;
+                        }
 
-        } catch (IOException | InterruptedException e) {
+                        System.out.println(
+                                        "Firestore Delete Error:");
 
-            e.printStackTrace();
+                        System.out.println(
+                                        response.body());
 
-            return false;
+                        return false;
+
+                } catch (IOException | InterruptedException e) {
+
+                        e.printStackTrace();
+
+                        return false;
+                }
         }
-    }
 
-    // ============================================================
-    // STRING FIELD HELPER
-    // ============================================================
+        // ============================================================
+        // STRING FIELD HELPER
+        // ============================================================
 
-    public static JsonObject stringField(
-            String value) {
+        public static JsonObject stringField(
+                        String value) {
 
-        JsonObject field = new JsonObject();
+                JsonObject field = new JsonObject();
 
-        field.addProperty(
-                "stringValue",
-                value
-        );
+                field.addProperty(
+                                "stringValue",
+                                value);
 
-        return field;
-    }
+                return field;
+        }
 
-    // ============================================================
-    // INTEGER FIELD HELPER
-    // ============================================================
+        // ============================================================
+        // INTEGER FIELD HELPER
+        // ============================================================
 
-    public static JsonObject integerField(
-            int value) {
+        public static JsonObject integerField(
+                        int value) {
 
-        JsonObject field = new JsonObject();
+                JsonObject field = new JsonObject();
 
-        field.addProperty(
-                "integerValue",
-                String.valueOf(value)
-        );
+                field.addProperty(
+                                "integerValue",
+                                String.valueOf(value));
 
-        return field;
-    }
+                return field;
+        }
 
-    // ============================================================
-    // DOUBLE FIELD HELPER
-    // ============================================================
+        // ============================================================
+        // DOUBLE FIELD HELPER
+        // ============================================================
 
-    public static JsonObject doubleField(
-            double value) {
+        public static JsonObject doubleField(
+                        double value) {
 
-        JsonObject field = new JsonObject();
+                JsonObject field = new JsonObject();
 
-        field.addProperty(
-                "doubleValue",
-                value
-        );
+                field.addProperty(
+                                "doubleValue",
+                                value);
 
-        return field;
-    }
+                return field;
+        }
 
-    // ============================================================
-    // BOOLEAN FIELD HELPER
-    // ============================================================
+        // ============================================================
+        // BOOLEAN FIELD HELPER
+        // ============================================================
 
-    public static JsonObject booleanField(
-            boolean value) {
+        public static JsonObject booleanField(
+                        boolean value) {
 
-        JsonObject field = new JsonObject();
+                JsonObject field = new JsonObject();
 
-        field.addProperty(
-                "booleanValue",
-                value
-        );
+                field.addProperty(
+                                "booleanValue",
+                                value);
 
-        return field;
-    }
+                return field;
+        }
+        // ============================================================
+        // GET ALL DOCUMENTS FROM COLLECTION
+        // ============================================================
 
-    // ============================================================
-    // PREVENT OBJECT CREATION
-    // ============================================================
+        public static JsonArray getCollectionDocuments(
+                        String collection) {
 
-    private FirestoreService() {
-    }
+                if (!FirebaseSession.isLoggedIn()) {
+
+                        System.out.println(
+                                        "User is not logged in.");
+
+                        return new JsonArray();
+                }
+
+                try {
+
+                        String url = FirebaseConfig.FIRESTORE_BASE_URL
+                                        + "/projects/"
+                                        + FirebaseConfig.PROJECT_ID
+                                        + "/databases/(default)/documents/"
+                                        + collection;
+
+                        System.out.println(
+                                        "Firestore Collection URL: "
+                                                        + url);
+
+                        HttpRequest request = HttpRequest.newBuilder()
+                                        .uri(
+                                                        URI.create(url))
+                                        .header(
+                                                        "Authorization",
+                                                        "Bearer "
+                                                                        + FirebaseSession
+                                                                                        .getIdToken())
+                                        .GET()
+                                        .build();
+
+                        HttpResponse<String> response = CLIENT.send(
+                                        request,
+                                        HttpResponse.BodyHandlers
+                                                        .ofString());
+
+                        if (response.statusCode() == 200) {
+
+                                JsonObject responseObject = JsonParser
+                                                .parseString(
+                                                                response.body())
+                                                .getAsJsonObject();
+
+                                if (responseObject.has(
+                                                "documents")) {
+
+                                        return responseObject
+                                                        .getAsJsonArray(
+                                                                        "documents");
+                                }
+
+                                return new JsonArray();
+                        }
+
+                        System.out.println(
+                                        "Firestore Collection Read Error:");
+
+                        System.out.println(
+                                        "HTTP Status: "
+                                                        + response.statusCode());
+
+                        System.out.println(
+                                        response.body());
+
+                        return new JsonArray();
+
+                } catch (
+                                IOException | InterruptedException e) {
+
+                        System.out.println(
+                                        "======================================");
+
+                        System.out.println(
+                                        "FIRESTORE READ CONNECTION ERROR");
+
+                        System.out.println(
+                                        "======================================");
+
+                        System.out.println(
+                                        "Error type: "
+                                                        + e.getClass()
+                                                                        .getName());
+
+                        System.out.println(
+                                        "Error message: "
+                                                        + e.getMessage());
+
+                        e.printStackTrace();
+
+                        System.out.println(
+                                        "======================================");
+
+                        return new JsonArray();
+                }
+        }
+
+        // ============================================================
+        // PREVENT OBJECT CREATION
+        // ============================================================
+
+        private FirestoreService() {
+        }
 }

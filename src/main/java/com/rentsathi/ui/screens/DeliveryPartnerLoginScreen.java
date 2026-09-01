@@ -1,7 +1,7 @@
 package com.rentsathi.ui.screens;
 
 import com.rentsathi.firebase.authentication.FirebaseAuthService;
-import com.rentsathi.ui.screens.delivery.DeliveryPartnerDashboardScreen;
+import com.rentsathi.ui.screens.delivery.DeliveryPartnerDashboard;
 
 import java.net.URL;
 
@@ -23,6 +23,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+
+
 
 public class DeliveryPartnerLoginScreen {
 
@@ -716,7 +718,7 @@ public class DeliveryPartnerLoginScreen {
                         "DELIVERY PARTNER LOGIN SUCCESSFUL"
                 );
 
-                DeliveryPartnerDashboardScreen.show(
+                DeliveryPartnerDashboard.show(
                         stage
                 );
             }

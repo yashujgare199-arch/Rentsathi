@@ -126,15 +126,7 @@ public class OwnerDashboardScreen {
                 "Dashboard",
                 true
         );
-
-        Button listings = sidebarButton(
-                FontAwesomeSolid.LIST_ALT,
-                "Manage Listings",
-                false
-        );
-        listings.setOnAction(event -> {
-                MyListingsScreen.show(stage);
-        });
+        
 
         Button bookings = sidebarButton(
                 FontAwesomeSolid.CALENDAR_ALT,
@@ -147,7 +139,7 @@ public class OwnerDashboardScreen {
 
         Button deliveries = sidebarButton(
                 FontAwesomeSolid.TRUCK,
-                "Deliveries",
+                "Owner Deliveries",
                 false
         );
 
@@ -159,7 +151,6 @@ public class OwnerDashboardScreen {
 
         navigation.getChildren().addAll(
                 dashboard,
-                listings,
                 bookings,
                 deliveries,
                 analytics

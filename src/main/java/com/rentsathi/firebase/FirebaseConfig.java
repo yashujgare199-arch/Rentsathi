@@ -15,7 +15,7 @@ public class FirebaseConfig {
             "https://identitytoolkit.googleapis.com/v1";
 
     public static final String FIRESTORE_BASE_URL =
-            "https://firestore.googleapis.com/v1";
+        "https://firestore.googleapis.com/v1";
 
     private FirebaseConfig() {
     }
