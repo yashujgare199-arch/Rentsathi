@@ -203,31 +203,33 @@ public class WelcomeScreen {
 
     private static HBox createLogo() {
 
-        Image image = new Image(
+        Image logoImage = new Image(
                 WelcomeScreen.class
                         .getResource("/images/logo.png")
                         .toExternalForm()
         );
 
-        ImageView logo = new ImageView(image);
+        ImageView logoView = new ImageView(logoImage);
 
-        logo.setFitWidth(48);
-        logo.setFitHeight(48);
-        logo.setPreserveRatio(true);
+logoView.setFitWidth(300);
+logoView.setFitHeight(90);
+logoView.setPreserveRatio(true);
+logoView.setSmooth(true);
 
-        Label title = new Label("RentSathi");
 
-        title.setStyle(
-                "-fx-font-family: 'Arial';" +
-                "-fx-font-size: 38px;" +
-                "-fx-font-weight: bold;" +
-                "-fx-text-fill: #111827;"
-        );
+       // Label title = new Label("RentSathi");
+
+        // title.setStyle(
+        //         "-fx-font-family: 'Arial';" +
+        //         "-fx-font-size: 38px;" +
+        //         "-fx-font-weight: bold;" +
+        //         "-fx-text-fill: #111827;"
+        // );
 
         HBox box = new HBox(
                 8,
-                logo,
-                title
+                logoView
+
         );
 
         box.setAlignment(Pos.CENTER);

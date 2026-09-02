@@ -177,26 +177,25 @@ public class OwnerLoginScreen {
                 new Insets(0, 0, 0, 50)
         );
 
-        Label secure = new Label(
-                "♢  Secure & Verified Platform"
-        );
+        // Label secure = new Label(
+        //         "♢  Secure & Verified Platform"
+        // );
 
-        secure.setStyle(
-                "-fx-font-family: 'Arial';" +
-                "-fx-font-size: 13px;" +
-                "-fx-text-fill: " + DARK_BLUE + ";"
-        );
+        // secure.setStyle(
+        //         "-fx-font-family: 'Arial';" +
+        //         "-fx-font-size: 13px;" +
+        //         "-fx-text-fill: " + DARK_BLUE + ";"
+        // );
 
-        VBox.setVgrow(
-                secure,
-                javafx.scene.layout.Priority.ALWAYS
-        );
+        // VBox.setVgrow(
+        //         javafx.scene.layout.Priority.ALWAYS
+        // );
 
         panel.getChildren().addAll(
                 brand,
                 imageBox,
-                information,
-                secure
+                information
+             
         );
 
         return panel;
@@ -265,7 +264,7 @@ public class OwnerLoginScreen {
     private static ImageView createIllustration() {
 
         Image image = loadImage(
-                "/images/owner-login-illustration.png"
+                "/images/owner.png"
         );
 
         ImageView imageView = new ImageView(image);

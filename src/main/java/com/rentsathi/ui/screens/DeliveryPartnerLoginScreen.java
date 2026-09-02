@@ -175,26 +175,25 @@ public class DeliveryPartnerLoginScreen {
                 new Insets(0, 0, 0, 50)
         );
 
-        Label secure = new Label(
-                "♢  Secure & Verified Platform"
-        );
+        // Label secure = new Label(
+        //         "♢  Secure & Verified Platform"
+        // );
 
-        secure.setStyle(
-                "-fx-font-family: 'Arial';" +
-                "-fx-font-size: 13px;" +
-                "-fx-text-fill: " + DARK_BLUE + ";"
-        );
+        // secure.setStyle(
+        //         "-fx-font-family: 'Arial';" +
+        //         "-fx-font-size: 13px;" +
+        //         "-fx-text-fill: " + DARK_BLUE + ";"
+        // );
 
-        VBox.setVgrow(
-                secure,
-                javafx.scene.layout.Priority.ALWAYS
-        );
+        // VBox.setVgrow(
+                
+        //         javafx.scene.layout.Priority.ALWAYS
+        // );
 
         panel.getChildren().addAll(
                 brand,
                 imageBox,
-                information,
-                secure
+                information
         );
 
         return panel;
@@ -208,14 +207,14 @@ public class DeliveryPartnerLoginScreen {
 
         URL url = DeliveryPartnerLoginScreen.class
                 .getResource(
-                        "/images/delivery-partner-login-illustration.png"
+                        "/images/logo.png"
                 );
 
         if (url == null) {
 
             throw new RuntimeException(
                     "Logo not found: " +
-                    "/images/delivery-partner-login-illustration.png"
+                    "/images/logo.png"
             );
         }
 
@@ -277,14 +276,14 @@ public class DeliveryPartnerLoginScreen {
 
         URL url = DeliveryPartnerLoginScreen.class
                 .getResource(
-                        "/images/delivery-partner-login-illustration.png"
+                        "/images/delivery.png"
                 );
 
         if (url == null) {
 
             throw new RuntimeException(
                     "Delivery image not found: " +
-                    "/images/delivery-partner-login-illustration.png"
+                    "/images/delivery.png"
             );
         }
 

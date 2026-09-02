@@ -196,7 +196,7 @@ public class AdminLoginScreen {
         Image image = new Image(
                 AdminLoginScreen.class
                         .getResource(
-                                "/images/admin-login-illustration.png"
+                                "/images/logo.png"
                         )
                         .toExternalForm()
         );

@@ -21,6 +21,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.SVGPath;
 import javafx.stage.Stage;
 
 public class CustomerLoginScreen {
@@ -62,7 +63,8 @@ public class CustomerLoginScreen {
                 root.setCenter(rightPanel);
 
                 leftPanel.prefWidthProperty().bind(
-                                root.widthProperty().multiply(0.5));
+                root.widthProperty().multiply(0.57)
+                );
 
                 StackPane finalRoot = new StackPane();
 
@@ -83,145 +85,526 @@ public class CustomerLoginScreen {
 
                 stage.setScene(scene);
 
-                stage.setMinWidth(1100);
-                stage.setMinHeight(700);
+                stage.setMinWidth(1200);
+                stage.setMinHeight(750);
 
                 stage.show();
         }
 
         private static VBox createLeftPanel() {
 
-                VBox panel = new VBox();
+    VBox panel = new VBox();
 
-                panel.setAlignment(
-                                Pos.TOP_CENTER);
+    panel.setAlignment(Pos.TOP_CENTER);
+    panel.setFillWidth(true);
 
-                panel.setPadding(
-                                new Insets(38, 50, 40, 50));
+    panel.setPadding(
+            new Insets(28, 35, 25, 35)
+    );
 
-                panel.setSpacing(25);
+    panel.setSpacing(0);
 
-                panel.setStyle(
-                                "-fx-background-color: #F0F0FA;");
+    panel.setStyle(
+            "-fx-background-color: #F3F5FF;"
+    );
 
-                HBox brand = createBrand();
+    // ============================================================
+    // 1. LOGO
+    // ============================================================
 
-                Image image = new Image(
-                                CustomerLoginScreen.class
-                                                .getResource(
-                                                                "/images/customer-login-illustration.png")
-                                                .toExternalForm());
+    HBox brand = createBrand();
 
-                ImageView illustration = new ImageView(image);
+    brand.setAlignment(Pos.CENTER_LEFT);
 
-                illustration.setFitWidth(390);
-                illustration.setFitHeight(230);
-                illustration.setPreserveRatio(true);
+    brand.setMaxWidth(Double.MAX_VALUE);
 
-                VBox imageBox = new VBox(
-                                illustration);
+    // ============================================================
+    // 2. HERO TEXT
+    // ============================================================
 
-                imageBox.setAlignment(
-                                Pos.CENTER);
+    VBox hero = new VBox();
 
-                imageBox.setPadding(
-                                new Insets(270, 0, 0, 0));
+    hero.setAlignment(Pos.TOP_LEFT);
 
-                Label title = new Label(
-                                "Find the right rental for your needs.");
+    hero.setSpacing(0);
 
-                title.setStyle(
-                                "-fx-font-family: 'Arial';" +
-                                                "-fx-font-size: 21px;" +
-                                                "-fx-font-weight: bold;" +
-                                                "-fx-text-fill: #111827;");
+    hero.setPadding(
+            new Insets(38, 0, 0, 5)
+    );
 
-                Label description = new Label(
-                                "Access a wide range of properties and equipment with ease and\n" +
-                                                "security. Join our community today.");
+    hero.setMaxWidth(650);
 
-                description.setAlignment(
-                                Pos.CENTER);
+    Label title1 = new Label(
+            "Everything You Need,"
+    );
 
-                description.setTextAlignment(
-                                javafx.scene.text.TextAlignment.CENTER);
+    title1.setStyle(
+            "-fx-font-family: 'Arial';" +
+            "-fx-font-size: 34px;" +
+            "-fx-font-weight: bold;" +
+            "-fx-text-fill: #12254A;"
+    );
 
-                description.setStyle(
-                                "-fx-font-family: 'Arial';" +
-                                                "-fx-font-size: 16px;" +
-                                                "-fx-text-fill: " + DARK_BLUE + ";" +
-                                                "-fx-line-spacing: 5px;");
+    Label title2 = new Label(
+            "On Rent."
+    );
 
-                VBox text = new VBox(
-                                10,
-                                title,
-                                description);
+    title2.setStyle(
+            "-fx-font-family: 'Arial';" +
+            "-fx-font-size: 34px;" +
+            "-fx-font-weight: bold;" +
+            "-fx-text-fill: #3657D6;"
+    );
 
-                text.setAlignment(
-                                Pos.CENTER);
+    Label description = new Label(
+            "From electronics to furniture, tools to appliances –\n" +
+            "rent everything you need in just a few clicks."
+    );
 
-                panel.getChildren().addAll(
-                                brand,
-                                imageBox,
-                                text);
+    description.setStyle(
+            "-fx-font-family: 'Arial';" +
+            "-fx-font-size: 15px;" +
+            "-fx-text-fill: #405577;" +
+            "-fx-line-spacing: 5px;"
+    );
 
-                return panel;
-        }
+    description.setPadding(
+            new Insets(12, 0, 0, 0)
+    );
 
-        private static HBox createBrand() {
+    hero.getChildren().addAll(
+            title1,
+            title2,
+            description
+    );
 
-                Image image = new Image(
-                                CustomerLoginScreen.class
-                                                .getResource(
-                                                                "/images/logo.png")
-                                                .toExternalForm());
+    // ============================================================
+    // 3. FEATURES
+    // ============================================================
 
-                ImageView logo = new ImageView(image);
+    HBox features = new HBox();
 
-                logo.setFitWidth(45);
-                logo.setFitHeight(45);
-                logo.setPreserveRatio(true);
+    features.setAlignment(Pos.CENTER);
+    features.setSpacing(15);
 
-                Label title = new Label(
-                                "RentSathi");
+    features.setPadding(
+            new Insets(26, 0, 12, 0)
+    );
 
-                title.setStyle(
-                                "-fx-font-family: 'Arial';" +
-                                                "-fx-font-size: 21px;" +
-                                                "-fx-font-weight: bold;" +
-                                                "-fx-text-fill: " + BLUE + ";");
+    features.setMaxWidth(520);
 
-                Label tagline = new Label(
-                                "Rent Smart. Live Easy.");
+    features.getChildren().addAll(
 
-                tagline.setStyle(
-                                "-fx-font-family: 'Arial';" +
-                                                "-fx-font-size: 13px;" +
-                                                "-fx-text-fill: #111827;");
+            createFeature(
+                    "home",
+                    "Wide Range",
+                    "of Products"
+            ),
 
-                VBox text = new VBox(
-                                2,
-                                title,
-                                tagline);
+            createFeature(
+                    "shield",
+                    "Safe &",
+                    "Trusted"
+            ),
 
-                HBox brand = new HBox(
-                                12,
-                                logo,
-                                text);
+            createFeature(
+                    "offer",
+                    "Affordable",
+                    "Prices"
+            ),
 
-                brand.setAlignment(
-                                Pos.CENTER_LEFT);
+            createFeature(
+                    "support",
+                    "24/7",
+                    "Support"
+            )
+    );
 
-                return brand;
-        }
+    // ============================================================
+    // 4. PRODUCT IMAGE
+    // ============================================================
+
+    Image image = new Image(
+            CustomerLoginScreen.class
+                    .getResource(
+                            "/images/customer-login-products.png"
+                    )
+                    .toExternalForm()
+    );
+
+    ImageView products = new ImageView(image);
+
+    products.setPreserveRatio(true);
+    products.setSmooth(true);
+
+    products.setFitWidth(620);
+    products.setFitHeight(340);
+
+    StackPane imageContainer = new StackPane();
+
+    imageContainer.setAlignment(
+            Pos.CENTER
+    );
+
+    imageContainer.setMaxWidth(
+            Double.MAX_VALUE
+    );
+
+    imageContainer.setPadding(
+            new Insets(0, 0, 0, 0)
+    );
+
+    imageContainer.getChildren().add(
+            products
+    );
+
+    // ============================================================
+    // 5. STATISTICS
+    // ============================================================
+
+    HBox stats = createStats();
+
+    StackPane statsContainer = new StackPane();
+
+    statsContainer.setAlignment(
+            Pos.CENTER
+    );
+
+    statsContainer.setMaxWidth(
+            Double.MAX_VALUE
+    );
+
+    statsContainer.setPadding(
+            new Insets(5, 0, 0, 0)
+    );
+
+    statsContainer.getChildren().add(
+            stats
+    );
+
+    // ============================================================
+    // ADD EVERYTHING
+    // ============================================================
+
+    panel.getChildren().addAll(
+            brand,
+            hero,
+            features,
+            imageContainer,
+            statsContainer
+    );
+
+    return panel;
+}
+
+private static HBox createStats() {
+
+    HBox stats = new HBox();
+
+    stats.setAlignment(
+            Pos.CENTER
+    );
+
+    stats.setSpacing(0);
+
+    stats.setPrefWidth(540);
+    stats.setMinWidth(540);
+    stats.setMaxWidth(540);
+
+    stats.setPadding(
+            new Insets(12, 10, 12, 10)
+    );
+
+    stats.setStyle(
+            "-fx-background-color: rgba(255,255,255,0.96);" +
+            "-fx-background-radius: 16px;" +
+            "-fx-border-color: #D6DFF2;" +
+            "-fx-border-width: 1px;" +
+            "-fx-border-radius: 16px;"
+    );
+
+    VBox customers = createStat(
+            "10K+",
+            "Happy Customers"
+    );
+
+    VBox rating = createStat(
+            "4.8/5",
+            "User Rating"
+    );
+
+    VBox categories = createStat(
+            "100+",
+            "Categories"
+    );
+
+    stats.getChildren().addAll(
+            customers,
+            createDivider(),
+            rating,
+            createDivider(),
+            categories
+    );
+
+    return stats;
+}
+
+private static VBox createStat(
+        String number,
+        String description) {
+
+    Label numberLabel = new Label(
+            number
+    );
+
+    numberLabel.setStyle(
+            "-fx-font-family: 'Arial';" +
+            "-fx-font-size: 17px;" +
+            "-fx-font-weight: bold;" +
+            "-fx-text-fill: #3657D6;"
+    );
+
+    Label descriptionLabel = new Label(
+            description
+    );
+
+    descriptionLabel.setStyle(
+            "-fx-font-family: 'Arial';" +
+            "-fx-font-size: 10px;" +
+            "-fx-text-fill: #405577;"
+    );
+
+    VBox box = new VBox();
+
+    box.setAlignment(
+            Pos.CENTER
+    );
+
+    box.setSpacing(3);
+
+    box.setPrefWidth(170);
+    box.setMinWidth(170);
+    box.setMaxWidth(170);
+
+    box.getChildren().addAll(
+            numberLabel,
+            descriptionLabel
+    );
+
+    return box;
+}
+
+private static Line createDivider() {
+
+    Line line = new Line(
+            0,
+            0,
+            0,
+            35
+    );
+
+    line.setStroke(
+            Color.web("#D6DFF2")
+    );
+
+    line.setStrokeWidth(
+            1
+    );
+
+    return line;
+}
+private static VBox createFeature(
+        String iconType,
+        String titleText,
+        String subtitleText) {
+
+    SVGPath icon = createIcon(iconType);
+
+    icon.setScaleX(0.85);
+    icon.setScaleY(0.85);
+
+    Label title = new Label(
+            titleText
+    );
+
+    title.setStyle(
+            "-fx-font-family: 'Arial';" +
+            "-fx-font-size: 12px;" +
+            "-fx-font-weight: bold;" +
+            "-fx-text-fill: #13294B;"
+    );
+
+    Label subtitle = new Label(
+            subtitleText
+    );
+
+    subtitle.setStyle(
+            "-fx-font-family: 'Arial';" +
+            "-fx-font-size: 11px;" +
+            "-fx-text-fill: #405577;"
+    );
+
+    VBox box = new VBox();
+
+    box.setAlignment(
+            Pos.CENTER
+    );
+
+    box.setSpacing(5);
+
+    box.setPrefWidth(115);
+    box.setMinWidth(115);
+    box.setMaxWidth(115);
+
+    box.getChildren().addAll(
+            icon,
+            title,
+            subtitle
+    );
+
+    return box;
+}
+
+private static SVGPath createIcon(String type) {
+
+    SVGPath icon = new SVGPath();
+
+    icon.setFill(Color.TRANSPARENT);
+    icon.setStroke(Color.web("#5268D8"));
+    icon.setStrokeWidth(1.8);
+
+    switch (type) {
+
+        // =========================
+        // HOME - OUTLINE
+        // =========================
+        case "home":
+
+            icon.setContent(
+                "M3 11 " +
+                "L12 3 " +
+                "L21 11 " +
+                "M5 10 V21 H19 V10 " +
+                "M9 21 V15 H15 V21"
+            );
+
+            break;
+
+
+        // =========================
+        // SHIELD - OUTLINE + CHECK
+        // =========================
+        case "shield":
+
+            icon.setContent(
+                "M12 3 " +
+                "L19 6 V11 " +
+                "C19 16 16 20 12 21 " +
+                "C8 20 5 16 5 11 V6 Z " +
+
+                "M8.5 12 " +
+                "L11 14.5 " +
+                "L15.5 9.5"
+            );
+
+            break;
+
+
+        // =========================
+        // TAG - OUTLINE
+        // =========================
+        case "offer":
+
+            icon.setContent(
+                "M20 13 " +
+                "L13 20 " +
+                "C12.45 20.55 11.55 20.55 11 20 " +
+                "L3 12 " +
+                "V4 H11 L20 13 Z " +
+
+                "M7.5 7.5 " +
+                "A1.5 1.5 0 1 0 7.5 7.51"
+            );
+
+            break;
+
+
+        // =========================
+        // HEADSET - OUTLINE
+        // =========================
+        case "support":
+
+            icon.setContent(
+                "M4 13 " +
+                "V11 " +
+                "C4 6.03 7.58 3 12 3 " +
+                "C16.42 3 20 6.03 20 11 V13 " +
+
+                "M4 13 H6 V18 H4 Z " +
+                "M18 13 H20 V18 H18 Z " +
+
+                "M18 18 " +
+                "C18 20 16 21 14 21 H12"
+            );
+
+            break;
+
+
+        default:
+
+            icon.setContent(
+                "M12 3 " +
+                "A9 9 0 1 0 12 21 " +
+                "A9 9 0 1 0 12 3"
+            );
+    }
+
+    icon.setScaleX(1.0);
+    icon.setScaleY(1.0);
+
+    return icon;
+}
+
+      private static HBox createBrand() {
+
+    Image image = new Image(
+            CustomerLoginScreen.class
+                    .getResource(
+                            "/images/logo.png"
+                    )
+                    .toExternalForm()
+    );
+
+    ImageView logo = new ImageView(image);
+
+    logo.setFitWidth(300);
+    logo.setFitHeight(90);
+
+    logo.setPreserveRatio(true);
+    logo.setSmooth(true);
+
+    HBox brand = new HBox(
+            logo
+    );
+
+    brand.setAlignment(
+            Pos.CENTER_LEFT
+    );
+
+    brand.setPadding(
+            new Insets(0, 0, 0, 10)
+    );
+
+    return brand;
+}
 
         private static StackPane createLoginPanel(
                         Stage stage) {
 
                 VBox card = new VBox();
 
-                card.setPrefWidth(420);
-                card.setMaxWidth(420);
+                card.setPrefWidth(470);
+                card.setMaxWidth(470);
 
                 card.setPadding(
                                 new Insets(32, 32, 28, 32));
@@ -229,11 +612,13 @@ public class CustomerLoginScreen {
                 card.setSpacing(10);
 
                 card.setStyle(
-                                "-fx-background-color: white;" +
-                                                "-fx-border-color: " + BORDER + ";" +
-                                                "-fx-border-width: 1px;" +
-                                                "-fx-border-radius: 8px;" +
-                                                "-fx-background-radius: 8px;");
+        "-fx-background-color: white;" +
+        "-fx-border-color: #E1E6F0;" +
+        "-fx-border-width: 1px;" +
+        "-fx-border-radius: 20px;" +
+        "-fx-background-radius: 20px;" +
+        "-fx-effect: dropshadow(gaussian, rgba(20,40,80,0.15), 25, 0.2, 0, 8);"
+                );
 
                 Label title = new Label(
                                 "Welcome Back");
