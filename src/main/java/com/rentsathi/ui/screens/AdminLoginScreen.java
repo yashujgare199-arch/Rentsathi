@@ -138,7 +138,7 @@ public class AdminLoginScreen {
         );
 
         graphicBox.setPadding(
-                new Insets(55, 0, 0, 0)
+                new Insets(30, 0, 0, 0)
         );
 
         Label title = new Label(
@@ -252,139 +252,34 @@ public class AdminLoginScreen {
     // ADMIN GRAPHIC
     // ============================================================
 
-    private static StackPane createAdminGraphic() {
+   private static StackPane createAdminGraphic() {
 
-        StackPane graphic =
-                new StackPane();
+    StackPane graphic = new StackPane();
 
-        graphic.setPrefSize(
-                500,
-                390
-        );
+    graphic.setPrefSize(500, 390);
 
-        Rectangle background =
-                new Rectangle(
-                        500,
-                        390
-                );
+    Image image = new Image(
+            AdminLoginScreen.class
+                    .getResource("/images/admin.png")
+                    .toExternalForm()
+    );
 
-        background.setFill(
-                Color.web("#F0F0FA")
-        );
+    ImageView adminImage = new ImageView(image);
 
-        background.setStroke(
-                Color.web("#D9DCEA")
-        );
+    adminImage.setFitWidth(500);
+    adminImage.setFitHeight(390);
+    adminImage.setPreserveRatio(true);
+    adminImage.setSmooth(true);
 
-        background.setStrokeWidth(1);
+    graphic.getChildren().add(adminImage);
 
-        // Vertical grid lines
-        for (int x = 0; x <= 500; x += 40) {
+    StackPane.setAlignment(
+            adminImage,
+            Pos.CENTER
+    );
 
-            Line line = new Line(
-                    x,
-                    0,
-                    x,
-                    390
-            );
-
-            line.setStroke(
-                    Color.web("#D9DCEA")
-            );
-
-            graphic.getChildren().add(
-                    line
-            );
-        }
-
-        // Horizontal grid lines
-        for (int y = 0; y <= 390; y += 40) {
-
-            Line line = new Line(
-                    0,
-                    y,
-                    500,
-                    y
-            );
-
-            line.setStroke(
-                    Color.web("#D9DCEA")
-            );
-
-            graphic.getChildren().add(
-                    line
-            );
-        }
-
-        Circle outerCircle =
-                new Circle(190);
-
-        outerCircle.setFill(
-                Color.web("#3657C8", 0.08)
-        );
-
-        Circle middleCircle =
-                new Circle(125);
-
-        middleCircle.setFill(
-                Color.TRANSPARENT
-        );
-
-        middleCircle.setStroke(
-                Color.web("#3657C8", 0.20)
-        );
-
-        middleCircle.setStrokeWidth(1);
-
-        Circle innerCircle =
-                new Circle(70);
-
-        innerCircle.setFill(
-                Color.web("#3657C8", 0.18)
-        );
-
-        StackPane circles =
-                new StackPane(
-                        outerCircle,
-                        middleCircle,
-                        innerCircle
-                );
-
-        circles.setTranslateY(5);
-
-        Label adminIcon =
-                new Label("ADMIN");
-
-        adminIcon.setStyle(
-                "-fx-font-family: 'Arial';" +
-                "-fx-font-size: 38px;" +
-                "-fx-font-weight: bold;" +
-                "-fx-text-fill: " + BLUE + ";"
-        );
-
-        graphic.getChildren().addAll(
-                background,
-                circles,
-                adminIcon
-        );
-
-        StackPane.setAlignment(
-                background,
-                Pos.CENTER
-        );
-
-        StackPane.setAlignment(
-                circles,
-                Pos.CENTER
-        );
-
-        StackPane.setAlignment(
-                adminIcon,
-                Pos.CENTER
-        );
-
-        return graphic;
-    }
+    return graphic;
+}
 
     // ============================================================
     // LOGIN PANEL
