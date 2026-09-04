@@ -3,6 +3,7 @@ package com.rentsathi.ui.screens.owner;
 import com.rentsathi.dao.rental.RentalDAO;
 import com.rentsathi.firebase.authentication.FirebaseSession;
 import com.rentsathi.model.rental.RentalModel;
+import com.rentsathi.ui.screens.OwnerLoginScreen;
 
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
@@ -16,6 +17,17 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import java.net.URI;
+import java.net.URLEncoder;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -266,7 +278,9 @@ public class AddNewRentalScreen {
                                                 "-fx-cursor: hand;");
 
                 logout.setOnAction(
-                                event -> stage.close());
+                                event -> {
+                                        OwnerLoginScreen.show(stage);
+                                });
 
                 sidebar.getChildren().addAll(
                                 logoBox,
@@ -834,7 +848,7 @@ public class AddNewRentalScreen {
                 addressField = new TextField();
 
                 addressField.setPromptText(
-                                "Street address or pickup location");
+                                "Owner pickup address");
 
                 cityField = new TextField();
 
@@ -894,7 +908,7 @@ public class AddNewRentalScreen {
                 box.getChildren().addAll(
                                 heading,
                                 labeledField(
-                                                "ADDRESS",
+                                                "OWNER PICKUP ADDRESS",
                                                 addressField),
                                 grid);
 
@@ -1029,7 +1043,7 @@ public class AddNewRentalScreen {
                 TextField field = new TextField();
 
                 field.setPromptText(
-                                "$ 0.00");
+                                "₹ 0.00");
 
                 field.setPrefHeight(38);
 
@@ -1394,6 +1408,44 @@ public class AddNewRentalScreen {
                         // SAVE TO FIRESTORE
                         // --------------------------------------------------------
 
+                        // --------------------------------------------------------
+                        // GEOCODE OWNER PICKUP LOCATION
+                        // --------------------------------------------------------
+
+                        double[] coordinates = geocodeAddress(
+                                        rental.getAddress(),
+                                        rental.getCity(),
+                                        rental.getState(),
+                                        rental.getPinCode());
+
+                        if (coordinates == null) {
+
+                                showError(
+                                                "Location Error",
+                                                "Could not find the owner pickup location. "
+                                                                + "Please check the address, city, state and PIN code.");
+
+                                return;
+                        }
+
+                        rental.setLatitude(
+                                        coordinates[0]);
+
+                        rental.setLongitude(
+                                        coordinates[1]);
+
+                        System.out.println(
+                                        "OWNER PICKUP LATITUDE = "
+                                                        + rental.getLatitude());
+
+                        System.out.println(
+                                        "OWNER PICKUP LONGITUDE = "
+                                                        + rental.getLongitude());
+
+                        // --------------------------------------------------------
+                        // SAVE TO FIRESTORE
+                        // --------------------------------------------------------
+
                         boolean success = RentalDAO.createRental(
                                         rental);
 
@@ -1503,5 +1555,96 @@ public class AddNewRentalScreen {
                                 message);
 
                 alert.showAndWait();
+        }
+
+        private static double[] geocodeAddress(
+                        String address,
+                        String city,
+                        String state,
+                        String pinCode) {
+
+                try {
+
+                        String fullAddress = address + ", "
+                                        + city + ", "
+                                        + state + " "
+                                        + pinCode;
+
+                        String encodedAddress = URLEncoder.encode(
+                                        fullAddress,
+                                        StandardCharsets.UTF_8);
+
+                        String url = "https://nominatim.openstreetmap.org/search"
+                                        + "?q="
+                                        + encodedAddress
+                                        + "&format=json"
+                                        + "&limit=1";
+
+                        HttpClient client = HttpClient.newHttpClient();
+
+                        HttpRequest request = HttpRequest.newBuilder()
+                                        .uri(URI.create(url))
+                                        .header(
+                                                        "User-Agent",
+                                                        "RentSathi/1.0")
+                                        .GET()
+                                        .build();
+
+                        HttpResponse<String> response = client.send(
+                                        request,
+                                        HttpResponse.BodyHandlers.ofString());
+
+                        if (response.statusCode() != 200) {
+
+                                System.out.println(
+                                                "GEOCODING ERROR: HTTP "
+                                                                + response.statusCode());
+
+                                return null;
+                        }
+
+                        JsonArray results = JsonParser.parseString(
+                                        response.body())
+                                        .getAsJsonArray();
+
+                        if (results.size() == 0) {
+
+                                System.out.println(
+                                                "GEOCODING: Address not found.");
+
+                                return null;
+                        }
+
+                        JsonObject result = results.get(0)
+                                        .getAsJsonObject();
+
+                        double latitude = result.get("lat")
+                                        .getAsDouble();
+
+                        double longitude = result.get("lon")
+                                        .getAsDouble();
+
+                        System.out.println(
+                                        "GEOCODED LATITUDE = "
+                                                        + latitude);
+
+                        System.out.println(
+                                        "GEOCODED LONGITUDE = "
+                                                        + longitude);
+
+                        return new double[] {
+                                        latitude,
+                                        longitude
+                        };
+
+                } catch (Exception e) {
+
+                        System.out.println(
+                                        "GEOCODING EXCEPTION");
+
+                        e.printStackTrace();
+
+                        return null;
+                }
         }
 }

@@ -358,7 +358,7 @@ public class OwnerDashboardScreen {
         VBox heading = new VBox(5);
 
         Label title = new Label(
-                "Good morning, John Doe"
+                "Good morning, Sahil "
         );
 
         title.setStyle(
@@ -621,7 +621,7 @@ public class OwnerDashboardScreen {
                 ),
                 statCard(
                         "Monthly Earnings",
-                        "$1,250.00",
+                        "₹1,250.00",
                         "",
                         FontAwesomeSolid.MONEY_BILL,
                         "#DCE6FF"
@@ -985,7 +985,7 @@ public class OwnerDashboardScreen {
                 "Sarah J.",
                 "Sony Alpha A7 III",
                 "Oct 15 - Oct 18",
-                "$135.00",
+                "₹135.00",
                 "PENDING"
         );
 
@@ -994,7 +994,7 @@ public class OwnerDashboardScreen {
                 "Mike R.",
                 "DJI Mavic 3",
                 "Oct 10 - Oct 12",
-                "$250.00",
+                "₹250.00",
                 "COMPLETED"
         );
 

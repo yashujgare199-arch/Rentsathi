@@ -954,7 +954,7 @@ public class RentalDetailsScreen {
                                                 "-fx-text-fill: " + DARK + ";");
 
                 Label total = new Label(
-                                "$135");
+                                "₹135");
 
                 total.setStyle(
                                 "-fx-font-size: 16px;" +

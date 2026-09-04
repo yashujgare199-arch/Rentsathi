@@ -128,6 +128,10 @@ public class RentalDAO {
                         // LOCATION
                         // ----------------------------------------------------
 
+                        // ----------------------------------------------------
+                        // LOCATION
+                        // ----------------------------------------------------
+
                         fields.add(
                                         "address",
                                         FirestoreService.stringField(
@@ -147,6 +151,16 @@ public class RentalDAO {
                                         "pinCode",
                                         FirestoreService.stringField(
                                                         rental.getPinCode()));
+
+                        fields.add(
+                                        "latitude",
+                                        FirestoreService.doubleField(
+                                                        rental.getLatitude()));
+
+                        fields.add(
+                                        "longitude",
+                                        FirestoreService.doubleField(
+                                                        rental.getLongitude()));
 
                         // ----------------------------------------------------
                         // RENTAL TERMS

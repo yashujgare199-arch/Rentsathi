@@ -29,6 +29,9 @@ public class RentalModel {
     private String state;
     private String pinCode;
 
+    private double latitude;
+    private double longitude;
+
     private String rentalRules;
     private String cancellationPolicy;
 
@@ -229,6 +232,22 @@ public class RentalModel {
 
     public void setPinCode(String pinCode) {
         this.pinCode = pinCode;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     public String getRentalRules() {

@@ -170,6 +170,9 @@ public class DeliveryPartnerDashboard {
                 Button active = navigationButton(
                                 "●",
                                 "Active Delivery");
+                active.setOnAction(event ->{
+                        ActiveDeliveriesScreen.show(stage);
+                });                
 
                 Button completed = navigationButton(
                                 "✓",
@@ -208,6 +211,10 @@ public class DeliveryPartnerDashboard {
                  * We will connect these navigation buttons to their
                  * real screens after the dashboard UI is confirmed.
                  */
+                active.setOnAction(
+                                event -> {
+                                        ActiveDeliveriesScreen.show(stage);
+                                });
 
                 logout.setOnAction(
                                 event -> {
