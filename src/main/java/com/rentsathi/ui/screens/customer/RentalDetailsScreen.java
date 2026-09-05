@@ -1,5 +1,6 @@
 package com.rentsathi.ui.screens.customer;
 
+import javafx.scene.control.TextArea;
 import com.rentsathi.ui.screens.CustomerLoginScreen;
 import com.rentsathi.model.rental.RentalModel;
 import javafx.geometry.Insets;
@@ -9,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
@@ -985,7 +987,8 @@ public class RentalDetailsScreen {
                                                 rental,
                                                 selection.startDate.getValue(),
                                                 selection.endDate.getValue(),
-                                                "Pickup"));
+                                                "Pickup",
+                                                new TextArea()));
 
                 bookNow.setMaxWidth(
                                 Double.MAX_VALUE);

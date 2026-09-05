@@ -9,6 +9,7 @@ public class RentalRequest {
     private RentalModel rental;
 
     private String customerId;
+    private String customerAddress;
 
     private LocalDate startDate;
     private LocalDate endDate;
@@ -75,6 +76,14 @@ public class RentalRequest {
 
     public void setCustomerId(String customerId) {
         this.customerId = customerId;
+    }
+
+    public String getCustomerAddress() {
+        return customerAddress;
+    }
+
+    public void setCustomerAddress(String customerAddress) {
+        this.customerAddress = customerAddress;
     }
 
     public LocalDate getStartDate() {

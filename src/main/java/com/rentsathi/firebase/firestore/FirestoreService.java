@@ -68,6 +68,15 @@ public class FirestoreService {
                                         "fields",
                                         fields);
 
+                        System.out.println(
+                                        "========== FIRESTORE BODY ==========");
+
+                        System.out.println(
+                                        body.toString());
+
+                        System.out.println(
+                                        "====================================");
+
                         // --------------------------------------------------------
                         // HTTP REQUEST
                         // --------------------------------------------------------

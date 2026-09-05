@@ -18,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
@@ -53,7 +54,8 @@ public class CheckoutScreen {
                         RentalModel rental,
                         LocalDate startDate,
                         LocalDate endDate,
-                        String fulfillmentMethod) {
+                        String fulfillmentMethod,
+                        TextArea deliveryAddress) {
 
                 System.out.println(
                                 "SHOW FULFILLMENT METHOD = ["
@@ -69,7 +71,8 @@ public class CheckoutScreen {
                                                 rental,
                                                 startDate,
                                                 endDate,
-                                                fulfillmentMethod));
+                                                fulfillmentMethod,
+                                                deliveryAddress));
 
                 VBox content = new VBox(20);
                 content.setPadding(new Insets(28, 45, 35, 45));
@@ -90,7 +93,7 @@ public class CheckoutScreen {
                                 rental,
                                 startDate,
                                 endDate,
-                                fulfillmentMethod);
+                                fulfillmentMethod, deliveryAddress);
 
                 HBox.setHgrow(left, Priority.ALWAYS);
                 HBox.setHgrow(right, Priority.SOMETIMES);
@@ -117,7 +120,8 @@ public class CheckoutScreen {
                         RentalModel rental,
                         LocalDate startDate,
                         LocalDate endDate,
-                        String fulfillmentMethod) {
+                        String fulfillmentMethod,
+                        TextArea deliveryAddress) {
 
                 HBox topBar = new HBox();
                 topBar.setPrefHeight(45);
@@ -176,7 +180,9 @@ public class CheckoutScreen {
                                                 rental,
                                                 startDate,
                                                 endDate,
-                                                fulfillmentMethod));
+                                                fulfillmentMethod,
+                                                deliveryAddress
+                                ));
 
                 topBar.getChildren().addAll(
                                 brand,
@@ -1004,7 +1010,8 @@ public class CheckoutScreen {
                         RentalModel rental,
                         LocalDate startDate,
                         LocalDate endDate,
-                        String fulfillmentMethod) {
+                        String fulfillmentMethod,
+                        TextArea deliveryAddress) {
 
                 VBox box = createCard();
                 box.setPrefWidth(350);
@@ -1166,6 +1173,17 @@ public class CheckoutScreen {
                                         totalAmount,
                                         "PENDING",
                                         java.time.LocalDateTime.now().toString());
+
+                        System.out.println(
+                                        "CUSTOMER ADDRESS AT CHECKOUT = ["
+                                                        + deliveryAddress.getText()
+                                                        + "]");
+
+                        request.setCustomerAddress(
+                                        deliveryAddress.getText());
+
+                        request.setDeliveryStatus(
+                                        "PENDING");
 
                         RentalRequestStore.addRequest(request);
 

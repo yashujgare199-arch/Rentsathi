@@ -46,8 +46,13 @@ public class WelcomeScreen {
         outerBorder.setArcHeight(24);
         outerBorder.setMouseTransparent(true);
 
-        outerBorder.widthProperty().bind(root.widthProperty());
-        outerBorder.heightProperty().bind(root.heightProperty());
+        outerBorder.widthProperty().bind(
+                root.widthProperty()
+        );
+
+        outerBorder.heightProperty().bind(
+                root.heightProperty()
+        );
 
         HBox logoBox = createLogo();
 
@@ -58,6 +63,7 @@ public class WelcomeScreen {
         );
 
         header.setAlignment(Pos.CENTER);
+
         header.setPadding(
                 new Insets(20, 20, 0, 20)
         );
@@ -74,10 +80,9 @@ public class WelcomeScreen {
                         "Find and rent what you need. Browse listings, book items, and manage your rentals seamlessly.",
                         createCustomerIcon(),
                         "Select Customer",
-
                         () -> {
-                                System.out.println("CUSTOMER BUTTON CLICKED");
-                                CustomerLoginScreen.show(stage);
+                            System.out.println("CUSTOMER BUTTON CLICKED");
+                            CustomerLoginScreen.show(stage);
                         }
                 ),
                 0,
@@ -91,8 +96,8 @@ public class WelcomeScreen {
                         createOwnerIcon(),
                         "Select Owner",
                         () -> {
-                                System.out.println("OWNER BUTTON CLICKED");
-                                OwnerLoginScreen.show(stage);
+                            System.out.println("OWNER BUTTON CLICKED");
+                            OwnerLoginScreen.show(stage);
                         }
                 ),
                 1,
@@ -106,7 +111,7 @@ public class WelcomeScreen {
                         createDeliveryIcon(),
                         "Select Partner",
                         () -> {
-                                DeliveryPartnerLoginScreen.show(stage);
+                            DeliveryPartnerLoginScreen.show(stage);
                         }
                 ),
                 0,
@@ -120,7 +125,7 @@ public class WelcomeScreen {
                         createAdminIcon(),
                         "Select Admin",
                         () -> {
-                                AdminLoginScreen.show(stage);
+                            AdminLoginScreen.show(stage);
                         }
                 ),
                 1,
@@ -130,6 +135,7 @@ public class WelcomeScreen {
         VBox center = new VBox(cards);
 
         center.setAlignment(Pos.CENTER);
+
         center.setPadding(
                 new Insets(10, 20, 5, 20)
         );
@@ -138,16 +144,18 @@ public class WelcomeScreen {
 
         Label question = new Label("?");
 
-        question.setMinSize(17, 17);
-        question.setMaxSize(17, 17);
+        question.setMinSize(22, 22);
+        question.setMaxSize(22, 22);
         question.setAlignment(Pos.CENTER);
 
         question.setStyle(
                 "-fx-border-color: " + DARK_BLUE + ";" +
+                "-fx-border-width: 1.5px;" +
                 "-fx-border-radius: 50%;" +
                 "-fx-background-radius: 50%;" +
                 "-fx-text-fill: " + DARK_BLUE + ";" +
-                "-fx-font-size: 11px;" +
+                "-fx-font-family: 'Arial';" +
+                "-fx-font-size: 13px;" +
                 "-fx-font-weight: bold;"
         );
 
@@ -162,7 +170,7 @@ public class WelcomeScreen {
         );
 
         support.setAlignment(Pos.CENTER);
-        support.setSpacing(6);
+        support.setSpacing(7);
 
         support.getChildren().addAll(
                 question,
@@ -186,8 +194,8 @@ public class WelcomeScreen {
 
         Scene scene = new Scene(
                 finalRoot,
-                1500,
-                830
+                1600,
+                900
         );
 
         scene.setFill(
@@ -196,8 +204,9 @@ public class WelcomeScreen {
 
         stage.setTitle("RentSathi");
         stage.setScene(scene);
-        stage.setMinWidth(1000);
-        stage.setMinHeight(650);
+        stage.setMinWidth(1200);
+        stage.setMinHeight(720);
+        stage.setMaximized(true);
         stage.show();
     }
 
@@ -209,27 +218,18 @@ public class WelcomeScreen {
                         .toExternalForm()
         );
 
-        ImageView logoView = new ImageView(logoImage);
+        ImageView logoView = new ImageView(
+                logoImage
+        );
 
-logoView.setFitWidth(300);
-logoView.setFitHeight(90);
-logoView.setPreserveRatio(true);
-logoView.setSmooth(true);
-
-
-       // Label title = new Label("RentSathi");
-
-        // title.setStyle(
-        //         "-fx-font-family: 'Arial';" +
-        //         "-fx-font-size: 38px;" +
-        //         "-fx-font-weight: bold;" +
-        //         "-fx-text-fill: #111827;"
-        // );
+        logoView.setFitWidth(300);
+        logoView.setFitHeight(90);
+        logoView.setPreserveRatio(true);
+        logoView.setSmooth(true);
 
         HBox box = new HBox(
                 8,
                 logoView
-
         );
 
         box.setAlignment(Pos.CENTER);
@@ -293,7 +293,18 @@ logoView.setSmooth(true);
         );
 
         description.setWrapText(true);
-        description.setMaxWidth(480);
+
+        description.setPrefWidth(478);
+        description.setMinWidth(478);
+        description.setMaxWidth(478);
+
+        description.setMinHeight(
+                javafx.scene.layout.Region.USE_PREF_SIZE
+        );
+
+        description.setMaxHeight(
+                javafx.scene.layout.Region.USE_PREF_SIZE
+        );
 
         description.setStyle(
                 "-fx-font-family: 'Arial';" +
@@ -308,7 +319,7 @@ logoView.setSmooth(true);
 
         button.setOnAction(
                 event -> action.run()
-        );      
+        );
 
         button.setMouseTransparent(false);
 
@@ -317,6 +328,8 @@ logoView.setSmooth(true);
         );
 
         button.setPrefHeight(44);
+        button.setMinHeight(44);
+        button.setMaxHeight(44);
 
         button.setStyle(
                 "-fx-background-color: white;" +
@@ -330,32 +343,34 @@ logoView.setSmooth(true);
                 "-fx-cursor: hand;"
         );
 
-        button.setOnMouseEntered(event ->
-                button.setStyle(
-                        "-fx-background-color: #F4F5FF;" +
-                        "-fx-border-color: " + BLUE + ";" +
-                        "-fx-border-width: 1px;" +
-                        "-fx-border-radius: 8px;" +
-                        "-fx-background-radius: 8px;" +
-                        "-fx-text-fill: " + BLUE + ";" +
-                        "-fx-font-family: 'Arial';" +
-                        "-fx-font-size: 16px;" +
-                        "-fx-cursor: hand;"
-                )
+        button.setOnMouseEntered(
+                event ->
+                        button.setStyle(
+                                "-fx-background-color: #F4F5FF;" +
+                                "-fx-border-color: " + BLUE + ";" +
+                                "-fx-border-width: 1px;" +
+                                "-fx-border-radius: 8px;" +
+                                "-fx-background-radius: 8px;" +
+                                "-fx-text-fill: " + BLUE + ";" +
+                                "-fx-font-family: 'Arial';" +
+                                "-fx-font-size: 16px;" +
+                                "-fx-cursor: hand;"
+                        )
         );
 
-        button.setOnMouseExited(event ->
-                button.setStyle(
-                        "-fx-background-color: white;" +
-                        "-fx-border-color: " + BORDER + ";" +
-                        "-fx-border-width: 1px;" +
-                        "-fx-border-radius: 8px;" +
-                        "-fx-background-radius: 8px;" +
-                        "-fx-text-fill: #111827;" +
-                        "-fx-font-family: 'Arial';" +
-                        "-fx-font-size: 16px;" +
-                        "-fx-cursor: hand;"
-                )
+        button.setOnMouseExited(
+                event ->
+                        button.setStyle(
+                                "-fx-background-color: white;" +
+                                "-fx-border-color: " + BORDER + ";" +
+                                "-fx-border-width: 1px;" +
+                                "-fx-border-radius: 8px;" +
+                                "-fx-background-radius: 8px;" +
+                                "-fx-text-fill: #111827;" +
+                                "-fx-font-family: 'Arial';" +
+                                "-fx-font-size: 16px;" +
+                                "-fx-cursor: hand;"
+                        )
         );
 
         VBox content = new VBox(
@@ -377,10 +392,12 @@ logoView.setSmooth(true);
         VBox card = new VBox(content);
 
         card.setPrefWidth(550);
-        card.setPrefHeight(285);
-
+        card.setMinWidth(550);
         card.setMaxWidth(550);
-        card.setMaxHeight(285);
+
+        card.setPrefHeight(315);
+        card.setMinHeight(315);
+        card.setMaxHeight(315);
 
         card.setStyle(
                 "-fx-background-color: white;" +

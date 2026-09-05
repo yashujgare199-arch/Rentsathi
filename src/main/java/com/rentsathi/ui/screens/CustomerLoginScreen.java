@@ -74,8 +74,8 @@ public class CustomerLoginScreen {
 
                 Scene scene = new Scene(
                                 finalRoot,
-                                1500,
-                                830);
+                                1600,
+                                900);
 
                 scene.setFill(
                                 Color.web(BACKGROUND));
@@ -85,8 +85,11 @@ public class CustomerLoginScreen {
 
                 stage.setScene(scene);
 
-                stage.setMinWidth(1200);
-                stage.setMinHeight(750);
+                leftPanel.prefWidthProperty()
+        .bind(root.widthProperty().multiply(0.57));
+
+rightPanel.prefWidthProperty()
+        .bind(root.widthProperty().multiply(0.43));
 
                 stage.show();
         }

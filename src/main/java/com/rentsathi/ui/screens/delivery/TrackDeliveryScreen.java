@@ -77,6 +77,11 @@ public class TrackDeliveryScreen {
 
         public static void show(RentalRequest request) {
 
+                System.out.println(
+                                "TRACK DELIVERY CUSTOMER ADDRESS = ["
+                                                + request.getCustomerAddress()
+                                                + "]");
+
                 Stage stage = new Stage();
 
                 BorderPane root = new BorderPane();
@@ -180,12 +185,7 @@ public class TrackDeliveryScreen {
 
                 HBox locations = new HBox(20);
 
-                VBox pickupBox = locationCard(
-                                "PICKUP",
-                                "Owner Location",
-                                "📍");
-
-                String destination = request.getRental() != null
+                String pickupAddress = request.getRental() != null
                                 ? request.getRental().getAddress()
                                                 + ", "
                                                 + request.getRental().getCity()
@@ -193,15 +193,26 @@ public class TrackDeliveryScreen {
                                                 + request.getRental().getState()
                                                 + " - "
                                                 + request.getRental().getPinCode()
-                                : "Destination not available";
+                                : "Not available";
+
+                VBox pickupBox = locationCard(
+                                "PICKUP",
+                                pickupAddress,
+                                "📍");
+
+                String destination = request.getCustomerAddress();
+
+                if (destination == null || destination.trim().isEmpty()) {
+                        destination = "Customer address not available";
+                }
 
                 VBox destinationBox = locationCard(
                                 "DESTINATION",
                                 destination,
-                                "🏁");
+                                "📍");
 
                 HBox.setHgrow(
-                                pickupBox,
+                                destinationBox,
                                 Priority.ALWAYS);
 
                 HBox.setHgrow(

@@ -41,7 +41,9 @@ public class BookRentalScreen {
                         RentalModel rental,
                         LocalDate startDate,
                         LocalDate endDate,
-                        String fulfillmentMethod) {
+                        String fulfillmentMethod,
+                        TextArea deliveryAddress
+                        ) {
 
                 BorderPane root = new BorderPane();
 
@@ -58,7 +60,8 @@ public class BookRentalScreen {
                                 stage,
                                 rental,
                                 startDate,
-                                endDate);
+                                endDate, 
+                                deliveryAddress);
 
                 ScrollPane scrollPane = new ScrollPane(content);
 
@@ -439,7 +442,8 @@ public class BookRentalScreen {
                         Stage stage,
                         RentalModel rental,
                         LocalDate startDate,
-                        LocalDate endDate) {
+                        LocalDate endDate,
+                        TextArea deliveryAddress) {
 
                 VBox content = new VBox(18);
 
@@ -477,7 +481,8 @@ public class BookRentalScreen {
                                 stage,
                                 rental,
                                 startDate,
-                                endDate);
+                                endDate,
+                                deliveryAddress);
 
                 HBox.setHgrow(
                                 productCard,
@@ -637,7 +642,8 @@ public class BookRentalScreen {
                         Stage stage,
                         RentalModel rental,
                         LocalDate startDate,
-                        LocalDate endDate) {
+                        LocalDate endDate,
+                        TextArea deliveryAddress) {
 
                 VBox wrapper = new VBox(12);
 
@@ -824,8 +830,6 @@ public class BookRentalScreen {
                                 "-fx-font-size: 12px;" +
                                                 "-fx-text-fill: " + DARK + ";");
 
-                TextArea deliveryAddress = new TextArea();
-
                 deliveryAddress.setPromptText(
                                 "Enter delivery address...");
 
@@ -883,7 +887,8 @@ public class BookRentalScreen {
                                 stage,
                                 rental,
                                 startDate,
-                                endDate);
+                                endDate,
+                                deliveryAddress);
 
                 wrapper.getChildren().addAll(
                                 details,
@@ -986,7 +991,8 @@ public class BookRentalScreen {
                         Stage stage,
                         RentalModel rental,
                         LocalDate startDate,
-                        LocalDate endDate) {
+                        LocalDate endDate,
+                        TextArea deliveryAddress) {
 
                 VBox box = new VBox(12);
 
@@ -1091,13 +1097,17 @@ public class BookRentalScreen {
 
                                         String fulfillmentMethod = selectedFulfillmentMethod;
 
+                                        String finalCustomerAddress = deliveryAddress.getText().trim();
+
                                         CheckoutScreen.show(
                                                         stage,
                                                         rental,
                                                         startDate,
                                                         endDate,
-                                                        fulfillmentMethod);
+                                                        fulfillmentMethod,
+                                                        deliveryAddress);
                                 });
+
                 box.getChildren().addAll(
                                 heading,
                                 rentalRow,

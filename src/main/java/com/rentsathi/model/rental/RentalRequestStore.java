@@ -53,6 +53,16 @@ public class RentalRequestStore {
                                         FirestoreService.stringField(
                                                         request.getCustomerId()));
 
+                        System.out.println(
+                                        "CUSTOMER ADDRESS BEFORE FIRESTORE = ["
+                                                        + request.getCustomerAddress()
+                                                        + "]");
+
+                        fields.add(
+                                        "customerAddress",
+                                        FirestoreService.stringField(
+                                                        request.getCustomerAddress()));
+
                         fields.add(
                                         "startDate",
                                         FirestoreService.stringField(
@@ -339,6 +349,22 @@ public class RentalRequestStore {
                                                                         .get("stringValue")
                                                                         .getAsString());
                                 }
+
+                                // -----------------------------
+                                // CUSTOMER ADDRESS
+                                // -----------------------------
+                                if (fields.has("customerAddress")) {
+
+                                        request.setCustomerAddress(
+                                                        fields
+                                                                        .getAsJsonObject("customerAddress")
+                                                                        .get("stringValue")
+                                                                        .getAsString());
+                                }
+                                System.out.println(
+                                                "LOADED CUSTOMER ADDRESS = ["
+                                                                + request.getCustomerAddress()
+                                                                + "]");
 
                                 // -----------------------------
                                 // REQUESTED AT

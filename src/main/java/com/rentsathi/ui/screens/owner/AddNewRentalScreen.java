@@ -1565,28 +1565,111 @@ public class AddNewRentalScreen {
 
                 try {
 
+                        // =====================================================
+                        // 1. TRY FULL ADDRESS
+                        // =====================================================
+
                         String fullAddress = address + ", "
                                         + city + ", "
-                                        + state + " "
-                                        + pinCode;
+                                        + state + ", "
+                                        + pinCode + ", India";
+
+                        double[] coordinates = searchNominatim(fullAddress);
+
+                        if (coordinates != null) {
+                                return coordinates;
+                        }
+
+                        // =====================================================
+                        // 2. FALLBACK: CITY + STATE + PIN
+                        // =====================================================
+
+                        String cityStatePin = city + ", "
+                                        + state + ", "
+                                        + pinCode + ", India";
+
+                        System.out.println(
+                                        "FULL ADDRESS NOT FOUND.");
+
+                        System.out.println(
+                                        "TRYING CITY + STATE + PIN = "
+                                                        + cityStatePin);
+
+                        coordinates = searchNominatim(cityStatePin);
+
+                        if (coordinates != null) {
+                                return coordinates;
+                        }
+
+                        // =====================================================
+                        // 3. FALLBACK: PIN + CITY + INDIA
+                        // =====================================================
+
+                        String pinCity = pinCode + ", "
+                                        + city + ", India";
+
+                        System.out.println(
+                                        "TRYING PIN + CITY = "
+                                                        + pinCity);
+
+                        coordinates = searchNominatim(pinCity);
+
+                        if (coordinates != null) {
+                                return coordinates;
+                        }
+
+                        System.out.println(
+                                        "GEOCODING FAILED FOR ALL SEARCH OPTIONS.");
+
+                        return null;
+
+                } catch (Exception e) {
+
+                        System.out.println(
+                                        "GEOCODING EXCEPTION");
+
+                        e.printStackTrace();
+
+                        return null;
+                }
+        }
+
+        private static double[] searchNominatim(
+                        String searchAddress) {
+
+                try {
+
+                        System.out.println(
+                                        "SEARCHING LOCATION = "
+                                                        + searchAddress);
 
                         String encodedAddress = URLEncoder.encode(
-                                        fullAddress,
+                                        searchAddress,
                                         StandardCharsets.UTF_8);
 
                         String url = "https://nominatim.openstreetmap.org/search"
                                         + "?q="
                                         + encodedAddress
-                                        + "&format=json"
-                                        + "&limit=1";
+                                        + "&format=jsonv2"
+                                        + "&limit=1"
+                                        + "&countrycodes=in";
 
-                        HttpClient client = HttpClient.newHttpClient();
+                        HttpClient client = HttpClient.newBuilder()
+                                        .connectTimeout(
+                                                        java.time.Duration.ofSeconds(15))
+                                        .build();
 
                         HttpRequest request = HttpRequest.newBuilder()
-                                        .uri(URI.create(url))
+                                        .uri(
+                                                        URI.create(url))
+                                        .timeout(
+                                                        java.time.Duration.ofSeconds(20))
                                         .header(
                                                         "User-Agent",
                                                         "RentSathi/1.0")
+                                        .header(
+                                                        "Accept",
+                                                        "application/json")
                                         .GET()
                                         .build();
 
@@ -1594,29 +1677,39 @@ public class AddNewRentalScreen {
                                         request,
                                         HttpResponse.BodyHandlers.ofString());
 
+                        System.out.println(
+                                        "HTTP STATUS = "
+                                                        + response.statusCode());
+
                         if (response.statusCode() != 200) {
 
                                 System.out.println(
-                                                "GEOCODING ERROR: HTTP "
-                                                                + response.statusCode());
+                                                "NOMINATIM ERROR = "
+                                                                + response.body());
 
                                 return null;
                         }
 
                         JsonArray results = JsonParser.parseString(
-                                        response.body())
-                                        .getAsJsonArray();
+                                        response.body()).getAsJsonArray();
+
+                        System.out.println(
+                                        "RESULT COUNT = "
+                                                        + results.size());
 
                         if (results.size() == 0) {
-
-                                System.out.println(
-                                                "GEOCODING: Address not found.");
 
                                 return null;
                         }
 
                         JsonObject result = results.get(0)
                                         .getAsJsonObject();
+
+                        if (!result.has("lat")
+                                        || !result.has("lon")) {
+
+                                return null;
+                        }
 
                         double latitude = result.get("lat")
                                         .getAsDouble();
@@ -1625,12 +1718,20 @@ public class AddNewRentalScreen {
                                         .getAsDouble();
 
                         System.out.println(
-                                        "GEOCODED LATITUDE = "
+                                        "LATITUDE = "
                                                         + latitude);
 
                         System.out.println(
-                                        "GEOCODED LONGITUDE = "
+                                        "LONGITUDE = "
                                                         + longitude);
+
+                        if (result.has("display_name")) {
+
+                                System.out.println(
+                                                "FOUND LOCATION = "
+                                                                + result.get(
+                                                                                "display_name").getAsString());
+                        }
 
                         return new double[] {
                                         latitude,
@@ -1640,7 +1741,7 @@ public class AddNewRentalScreen {
                 } catch (Exception e) {
 
                         System.out.println(
-                                        "GEOCODING EXCEPTION");
+                                        "NOMINATIM SEARCH EXCEPTION");
 
                         e.printStackTrace();
 
