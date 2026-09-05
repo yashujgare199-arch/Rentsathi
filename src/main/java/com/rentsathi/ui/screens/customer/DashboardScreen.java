@@ -3,6 +3,7 @@ package com.rentsathi.ui.screens.customer;
 import java.net.URL;
 
 import com.rentsathi.ui.screens.CustomerLoginScreen;
+import com.rentsathi.ui.screens.customer.ProfileScreen;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -64,6 +65,7 @@ public class DashboardScreen {
                 // =========================================================
 
                 BorderPane mainArea = new BorderPane();
+                mainArea.setMinWidth(0);
 
                 // Top header
                 HBox topBar = createTopBar();
@@ -72,6 +74,7 @@ public class DashboardScreen {
 
                 // Dashboard content
                 VBox content = createDashboardContent();
+                content.setMaxWidth(Double.MAX_VALUE);
 
                 ScrollPane scrollPane = new ScrollPane(content);
 
@@ -98,15 +101,17 @@ public class DashboardScreen {
 
                 root.setLeft(sidebar);
                 root.setCenter(mainArea);
+                BorderPane.setMargin(mainArea, new Insets(0));
 
                 // =========================================================
                 // SCENE
                 // =========================================================
 
                 Scene scene = new Scene(
-                                root,
-                                1450,
-                                820);
+        root,
+        1600,
+        900
+);
 
                 scene.setFill(
                                 Color.web(BACKGROUND));
@@ -116,8 +121,9 @@ public class DashboardScreen {
 
                 stage.setScene(scene);
 
-                stage.setMinWidth(1100);
-                stage.setMinHeight(700);
+                stage.setMinWidth(1280);
+stage.setMinHeight(720);
+stage.setMaximized(true);
 
                 stage.show();
         }
@@ -134,8 +140,11 @@ public class DashboardScreen {
                 sidebar.setMinWidth(265);
                 sidebar.setMaxWidth(265);
 
-                sidebar.setPadding(new Insets(28, 18, 20, 18));
-                sidebar.setSpacing(10);
+                sidebar.setPadding(
+                new Insets(28, 18, 20, 18)
+                );
+
+                sidebar.setSpacing(0);
 
                 sidebar.setStyle(
                                 "-fx-background-color: #FFFFFF;" +
@@ -173,43 +182,137 @@ public class DashboardScreen {
                 logoBox.getChildren().addAll(logo, brandText);
 
                 // NAVIGATION
-                VBox navigation = new VBox(8);
-                navigation.setPadding(new Insets(32, 0, 0, 0));
+VBox navigation = new VBox(2);
 
-                Button customerButton = createNavigationButton("home", "Customer", true);
+navigation.setPadding(
+        new Insets(28, 0, 0, 0)
+);
 
-                Button ownerButton = createNavigationButton("owner", "Owner", false);
+Label sectionLabel =
+        new Label("CUSTOMER");
 
-                Button deliveryButton = createNavigationButton("delivery", "Delivery Partner", false);
+sectionLabel.setFont(
+        Font.font(
+                "Arial",
+                FontWeight.BOLD,
+                11
+        )
+);
 
-                Button adminButton = createNavigationButton("admin", "Admin", false);
+sectionLabel.setTextFill(
+        Color.web("#94A0B8")
+);
 
-                navigation.getChildren().addAll(
-                                customerButton,
-                                ownerButton,
-                                deliveryButton,
-                                adminButton);
+sectionLabel.setPadding(
+        new Insets(0, 0, 8, 14)
+);
 
-                RegionSpacer spacer = new RegionSpacer();
-                VBox.setVgrow(spacer, Priority.ALWAYS);
+Button profileButton =
+        createNavigationButton(
+                "profile",
+                "My Profile",
+                false
+);
 
-                Button helpButton = createBottomButton("help", "Help Center");
+profileButton.setOnAction(
+        event ->
+                ProfileScreen.show(stage)
+);
 
-                Button logoutButton = createBottomButton("logout", "Logout");
 
-                logoutButton.setOnAction(
-                                event -> CustomerLoginScreen.show(stage));
+Button rentalsButton =
+        createNavigationButton(
+                "rentals",
+                "My Rentals",
+                false
+);
 
-                sidebar.getChildren().addAll(
-                                logoBox,
-                                navigation,
-                                spacer,
-                                helpButton,
-                                logoutButton);
+Button bookingsButton =
+        createNavigationButton(
+                "bookings",
+                "My Bookings",
+                false
+);
 
-                return sidebar;
+Button savedButton =
+        createNavigationButton(
+                "heart",
+                "Saved Items",
+                false
+);
+
+Button historyButton =
+        createNavigationButton(
+                "clock",
+                "Rental History",
+                false
+);
+
+Button paymentsButton =
+        createNavigationButton(
+                "payments",
+                "Payments",
+                false
+);
+
+Button notificationsButton =
+        createNavigationButton(
+                "bell",
+                "Notifications",
+                false
+);
+
+navigation.getChildren().addAll(
+        sectionLabel,
+        profileButton,
+        rentalsButton,
+        bookingsButton,
+        savedButton,
+        historyButton,
+        paymentsButton,
+        notificationsButton
+);
+RegionSpacer spacer = new RegionSpacer();
+
+VBox.setVgrow(
+        spacer,
+        Priority.ALWAYS
+);
+
+Button helpButton =
+        createBottomButton(
+                "help",
+                "Help Center"
+        );
+
+Button logoutButton =
+        createBottomButton(
+                "logout",
+                "Logout"
+        );
+
+VBox bottomButtons = new VBox(4);
+
+bottomButtons.getChildren().addAll(
+        helpButton,
+        logoutButton
+);
+
+
+logoutButton.setOnAction(
+        event -> CustomerLoginScreen.show(stage)
+);
+
+sidebar.getChildren().addAll(
+        logoBox,
+        navigation,
+        spacer,
+        helpButton,
+        logoutButton
+);
+return sidebar;
         }
-
+        
         // =============================================================
         // NAVIGATION BUTTON
         // =============================================================
@@ -221,7 +324,9 @@ public class DashboardScreen {
 
                 Button button = new Button();
                 button.setMaxWidth(Double.MAX_VALUE);
-                button.setPrefHeight(50);
+                button.setPrefHeight(44);
+                button.setMaxHeight(44);
+                button.setMinHeight(44);
 
                 HBox content = new HBox(14);
                 content.setAlignment(Pos.CENTER_LEFT);
@@ -548,36 +653,64 @@ public class DashboardScreen {
 
                 VBox content = new VBox();
 
-                content.setPadding(new Insets(20, 32, 28, 32));
-                content.setSpacing(20);
+                content.setPadding(new Insets(18, 26, 24, 26));
+                content.setMaxWidth(Double.MAX_VALUE);
+content.setMinWidth(0);
+                content.setSpacing(18);
                 content.setStyle("-fx-background-color: " + BACKGROUND + ";");
 
                 VBox welcomeCard = createWelcomeCard();
 
-                HBox mainArea = new HBox(24);
+                HBox mainArea = new HBox(22);
 
-                VBox leftContent = new VBox(24);
-                VBox rightContent = new VBox(18);
+VBox leftContent = new VBox(20);
+VBox rightContent = new VBox(18);
 
-                VBox categories = createCategoriesSection();
-                VBox recommended = createRecommendedSection();
+VBox categoriesSection = createCategoriesSection();
+VBox recommendedSection = createRecommendedSection();
 
-                leftContent.getChildren().addAll(categories, recommended);
+leftContent.getChildren().addAll(
+        categoriesSection,
+        recommendedSection
+);
 
-                VBox booking = createUpcomingBooking();
-                VBox quickActions = createQuickActions();
+VBox booking = createUpcomingBooking();
+VBox quickActions = createQuickActions();
 
-                rightContent.getChildren().addAll(booking, quickActions);
+rightContent.getChildren().addAll(
+        booking,
+        quickActions
+);
 
-                HBox.setHgrow(leftContent, Priority.ALWAYS);
+rightContent.setPrefWidth(300);
+rightContent.setMinWidth(300);
+rightContent.setMaxWidth(300);
 
-                mainArea.getChildren().addAll(
-                                leftContent,
-                                rightContent);
+leftContent.setMinWidth(0);
+leftContent.setMaxWidth(Double.MAX_VALUE);
 
+HBox.setHgrow(
+        leftContent,
+        Priority.ALWAYS
+);
+
+HBox.setHgrow(
+        rightContent,
+        Priority.NEVER
+);
+
+mainArea.setFillHeight(true);
+mainArea.setMaxWidth(Double.MAX_VALUE);
+
+mainArea.getChildren().addAll(
+        leftContent,
+        rightContent
+);
                 content.getChildren().addAll(
                                 welcomeCard,
                                 mainArea);
+
+                VBox.setVgrow(mainArea, Priority.ALWAYS);
 
                 return content;
         }
@@ -592,7 +725,9 @@ public class DashboardScreen {
 
                 card.setPadding(new Insets(24, 24, 20, 24));
                 card.setSpacing(17);
-                card.setPrefHeight(170);
+                card.setPrefHeight(225);
+card.setMinHeight(225);
+card.setMaxHeight(225);
 
                 card.setStyle(
                                 "-fx-background-color: linear-gradient(" +
@@ -605,11 +740,7 @@ public class DashboardScreen {
                                                 "gaussian, rgba(45,70,120,0.12), 18, 0.12, 0, 5);");
 
                 Label greeting =
-
-                                new Label("Good morning, Alex 👋");
-
-                new Label(
-                                "Good morning, Sahil");
+                                new Label("Good morning, Sahil 👋");
 
                 greeting.setFont(
                                 Font.font("Arial", FontWeight.BOLD, 29));
@@ -723,153 +854,336 @@ public class DashboardScreen {
 
         private VBox createCategoriesSection() {
 
-                VBox section = new VBox(13);
+    VBox section = new VBox(14);
 
-                HBox header = new HBox();
+    HBox header = new HBox();
 
-                Label title = new Label("Browse Categories");
-                title.setFont(
-                                Font.font("Arial", FontWeight.BOLD, 20));
-                title.setTextFill(Color.web(DARK_TEXT));
+    Label title =
+            new Label("Browse Categories");
 
-                Region spacer = new Region();
-                HBox.setHgrow(spacer, Priority.ALWAYS);
+    title.setFont(
+            Font.font(
+                    "Arial",
+                    FontWeight.BOLD,
+                    24
+            )
+    );
 
-                Label viewAll = new Label("View All  ›");
-                viewAll.setFont(
-                                Font.font("Arial", FontWeight.BOLD, 12));
-                viewAll.setTextFill(Color.web(BLUE));
+    title.setTextFill(
+            Color.web(DARK_TEXT)
+    );
 
-                header.setAlignment(Pos.CENTER_LEFT);
-                header.getChildren().addAll(
-                                title,
-                                spacer,
-                                viewAll);
+    Region spacer = new Region();
 
-                GridPane grid = new GridPane();
-                grid.setHgap(12);
-                grid.setVgap(12);
+    HBox.setHgrow(
+            spacer,
+            Priority.ALWAYS
+    );
 
-                String[] names = {
-                                "Electronics",
-                                "Furniture",
-                                "Vehicles",
-                                "Tools",
-                                "Appliances",
-                                "Events & Party",
-                                "Sports",
-                                "Other"
-                };
+    Label viewAll =
+            new Label("View All  ›");
 
-                String[] icons = {
-                                "electronics",
-                                "furniture",
-                                "vehicle",
-                                "tools",
-                                "appliances",
-                                "events",
-                                "sports",
-                                "other"
-                };
+    viewAll.setFont(
+            Font.font(
+                    "Arial",
+                    FontWeight.BOLD,
+                    13
+            )
+    );
 
-                for (int i = 0; i < names.length; i++) {
+    viewAll.setTextFill(
+            Color.web(BLUE)
+    );
 
-                        VBox category = createCategoryCard(
-                                        icons[i],
-                                        names[i]);
+    header.setAlignment(
+            Pos.CENTER_LEFT
+    );
 
-                        grid.add(
-                                        category,
-                                        i % 4,
-                                        i / 4);
+    header.getChildren().addAll(
+            title,
+            spacer,
+            viewAll
+    );
 
-                        GridPane.setHgrow(
-                                        category,
-                                        Priority.ALWAYS);
-                }
+   GridPane grid = new GridPane();
 
-                for (int i = 0; i < 4; i++) {
+grid.setHgap(14);
+grid.setVgap(14);
 
-                        ColumnConstraints column = new ColumnConstraints();
+grid.setMaxWidth(Double.MAX_VALUE);
 
-                        column.setPercentWidth(25);
-                        grid.getColumnConstraints().add(column);
-                }
+    String[] names = {
+            "Electronics",
+            "Furniture",
+            "Vehicles",
+            "Tools",
+            "Appliances",
+            "Events & Party",
+            "Sports",
+            "Other"
+    };
 
-                section.getChildren().addAll(
-                                header,
-                                grid);
+    String[] descriptions = {
+            "Laptops, Phones, Cameras,\nSpeakers & more",
+            "Sofa, Tables, Chairs,\nBeds & more",
+            "Cars, Bikes, Scooters\n& more",
+            "Power Tools, Hand Tools,\nEquipment & more",
+            "Fridge, AC, Washing Machine,\nMicrowave & more",
+            "Tents, Lights, Decor,\nDJ Systems & more",
+            "Bikes, Fitness, Outdoor\nGames & more",
+            "Explore many more\nrental options"
+    };
 
-                return section;
-        }
+    String[] images = {
+            "/images/categories/electronics.png",
+            "/images/categories/furniture.png",
+            "/images/categories/vehicles.png",
+            "/images/categories/tools.png",
+            "/images/categories/appliances.png",
+            "/images/categories/events.png",
+            "/images/categories/sports.png",
+            "/images/categories/other.png"
+    };
+
+    for (int i = 0; i < names.length; i++) {
+
+        VBox category =
+        createCategoryCard(
+                names[i],
+                descriptions[i],
+                images[i],
+                false
+        );
+
+        grid.add(
+                category,
+                i % 4,
+                i / 4
+        );
+
+        GridPane.setHgrow(
+                category,
+                Priority.ALWAYS
+        );
+    }
+
+    for (int i = 0; i < 4; i++) {
+
+        ColumnConstraints column =
+                new ColumnConstraints();
+
+        column.setPercentWidth(25);
+        column.setHgrow(Priority.ALWAYS);
+
+        grid.getColumnConstraints().add(
+                column
+        );
+    }
+
+    section.getChildren().addAll(
+            header,
+            grid
+    );
+
+    return section;
+}
 
         // =============================================================
         // CATEGORY CARD
         // =============================================================
 
         private VBox createCategoryCard(
-                        String iconType,
-                        String name) {
+        String name,
+        String description,
+        String imagePath,
+        boolean selected) {
 
-                VBox card = new VBox(9);
+    VBox card = new VBox();
 
-                card.setAlignment(Pos.CENTER);
-                card.setPrefHeight(96);
-                card.setMinHeight(96);
+    card.setAlignment(
+            Pos.TOP_CENTER
+    );
 
-                card.setStyle(
-                                "-fx-background-color: #FFFFFF;" +
-                                                "-fx-border-color: #E0E5EF;" +
-                                                "-fx-border-width: 1px;" +
-                                                "-fx-border-radius: 13px;" +
-                                                "-fx-background-radius: 13px;" +
-                                                "-fx-effect: dropshadow(" +
-                                                "gaussian, rgba(40,60,100,0.07), 9, 0.08, 0, 2);" +
-                                                "-fx-cursor: hand;");
+   card.setPrefWidth(250);
+card.setMinWidth(0);
+card.setMaxWidth(Double.MAX_VALUE);
 
-                StackPane iconCircle = new StackPane();
-                iconCircle.setPrefSize(44, 44);
-                iconCircle.setMinSize(44, 44);
-                iconCircle.setMaxSize(44, 44);
+    card.setStyle(
+        "-fx-background-color: #FFFFFF;" +
+        "-fx-border-color: #E0E5EF;" +
+        "-fx-border-width: 1px;" +
+        "-fx-border-radius: 17px;" +
+        "-fx-background-radius: 17px;" +
+        "-fx-effect: dropshadow(" +
+        "gaussian, rgba(40,60,100,0.10), 14, 0.10, 0, 4);" +
+        "-fx-cursor: hand;"
+);
 
-                iconCircle.setStyle(
-                                "-fx-background-color: #E8EEFF;" +
-                                                "-fx-background-radius: 50%;");
+    card.setOnMouseEntered(event -> {
+    card.setStyle(
+            "-fx-background-color: #FFFFFF;" +
+            "-fx-border-color: " + BLUE + ";" +
+            "-fx-border-width: 2px;" +
+            "-fx-border-radius: 17px;" +
+            "-fx-background-radius: 17px;" +
+            "-fx-effect: dropshadow(" +
+            "gaussian, rgba(49,88,212,0.20), 18, 0.15, 0, 5);" +
+            "-fx-cursor: hand;"
+    );
+});
 
-                SVGPath icon = createIcon(iconType);
-                icon.setScaleX(0.85);
-                icon.setScaleY(0.85);
+card.setOnMouseExited(event -> {
+    card.setStyle(
+            "-fx-background-color: #FFFFFF;" +
+            "-fx-border-color: #E0E5EF;" +
+            "-fx-border-width: 1px;" +
+            "-fx-border-radius: 17px;" +
+            "-fx-background-radius: 17px;" +
+            "-fx-effect: dropshadow(" +
+            "gaussian, rgba(40,60,100,0.10), 14, 0.10, 0, 4);" +
+            "-fx-cursor: hand;"
+    );
+});
 
-                iconCircle.getChildren().add(icon);
+    StackPane imageContainer =
+            new StackPane();
 
-                Label text = new Label(name);
-                text.setFont(
-                                Font.font("Arial", FontWeight.NORMAL, 13));
-                text.setTextFill(Color.web(DARK_TEXT));
+    imageContainer.setPrefHeight(110);
+    imageContainer.setMinHeight(110);
+    imageContainer.setMaxHeight(110);
 
-                card.getChildren().addAll(
-                                iconCircle,
-                                text);
+    imageContainer.setStyle(
+            "-fx-background-color: #F4F7FF;" +
+            "-fx-background-radius: 50%;"
+    );
 
-                if ("Electronics".equals(name)) {
+    StackPane.setMargin(
+            imageContainer,
+            new Insets(12, 25, 0, 25)
+    );
 
-                        card.setStyle(
-                                        "-fx-background-color: #FFFFFF;" +
-                                                        "-fx-border-color: " + BLUE + ";" +
-                                                        "-fx-border-width: 2px;" +
-                                                        "-fx-border-radius: 13px;" +
-                                                        "-fx-background-radius: 13px;" +
-                                                        "-fx-effect: dropshadow(" +
-                                                        "gaussian, rgba(49,88,212,0.16), 12, 0.10, 0, 3);" +
-                                                        "-fx-cursor: hand;");
+    ImageView imageView = null;
 
-                        card.setOnMouseClicked(
-                                        event -> ElectronicsRentalScreen.show(stage));
-                }
+    try {
 
-                return card;
+        URL imageUrl =
+                DashboardScreen.class
+                        .getResource(imagePath);
+
+        if (imageUrl != null) {
+
+            Image image =
+                    new Image(
+                            imageUrl.toExternalForm()
+                    );
+
+            imageView =
+                    new ImageView(image);
+
+            imageView.setFitWidth(145);
+            imageView.setFitHeight(105);
+
+            imageView.setPreserveRatio(true);
+            imageView.setSmooth(true);
+
+            imageContainer.getChildren()
+                    .add(imageView);
         }
 
+    } catch (Exception e) {
+
+        System.out.println(
+                "Category image error: "
+                        + imagePath
+        );
+    }
+
+    Label nameLabel =
+            new Label(name);
+
+    nameLabel.setFont(
+            Font.font(
+                    "Arial",
+                    FontWeight.BOLD,
+                    18
+            )
+    );
+
+    nameLabel.setTextFill(
+            Color.web("#294A91")
+    );
+
+    nameLabel.setAlignment(
+            Pos.CENTER
+    );
+
+    nameLabel.setWrapText(true);
+
+    Label descriptionLabel =
+        new Label(description);
+
+descriptionLabel.setPrefWidth(220);
+descriptionLabel.setMinWidth(220);
+descriptionLabel.setMaxWidth(220);
+
+descriptionLabel.setPrefHeight(40);
+descriptionLabel.setMinHeight(40);
+descriptionLabel.setMaxHeight(40);
+
+descriptionLabel.setWrapText(true);
+
+descriptionLabel.setTextAlignment(
+        javafx.scene.text.TextAlignment.CENTER
+);
+
+descriptionLabel.setAlignment(
+        Pos.CENTER
+);
+
+descriptionLabel.setTextOverrun(
+        javafx.scene.control.OverrunStyle.CLIP
+);
+
+descriptionLabel.setFont(
+        Font.font(
+                "Arial",
+                FontWeight.NORMAL,
+                12
+        )
+);
+
+descriptionLabel.setTextFill(
+        Color.web("#66799F")
+);
+
+    VBox.setMargin(
+            nameLabel,
+            new Insets(10, 8, 0, 8)
+    );
+
+    VBox.setMargin(
+            descriptionLabel,
+            new Insets(5, 8, 0, 8)
+    );
+
+
+
+    card.getChildren().addAll(
+            imageContainer,
+            nameLabel,
+            descriptionLabel
+    );
+
+    if ("Electronics".equals(name)) {
+
+        card.setOnMouseClicked(
+                event ->
+                        ElectronicsRentalScreen.show(stage)
+        );
+    }
+
+    return card;
+}
         // =============================================================
         // UPCOMING BOOKING
         // =============================================================
@@ -878,8 +1192,11 @@ public class DashboardScreen {
 
                 VBox card = new VBox();
 
-                card.setPrefWidth(330);
-                card.setMinWidth(330);
+                card.setPrefWidth(300);
+card.setMinWidth(300);
+card.setMaxWidth(300);
+card.setFillWidth(true);
+
                 card.setPadding(new Insets(18, 18, 16, 18));
                 card.setSpacing(11);
 
@@ -918,13 +1235,19 @@ public class DashboardScreen {
                                 title);
 
                 VBox booking = new VBox(10);
-                booking.setPadding(new Insets(13));
 
-                booking.setStyle(
-                                "-fx-background-color: #F5F7FC;" +
-                                                "-fx-border-color: " + BORDER + ";" +
-                                                "-fx-border-radius: 9px;" +
-                                                "-fx-background-radius: 9px;");
+booking.setPrefWidth(0);
+booking.setMinWidth(0);
+booking.setMaxWidth(Double.MAX_VALUE);
+
+booking.setPadding(new Insets(13));
+
+booking.setStyle(
+        "-fx-background-color: #F5F7FC;" +
+        "-fx-border-color: " + BORDER + ";" +
+        "-fx-border-radius: 9px;" +
+        "-fx-background-radius: 9px;"
+);
 
                 HBox topRow = new HBox();
 
@@ -956,8 +1279,17 @@ public class DashboardScreen {
                                 Font.font("Arial", FontWeight.BOLD, 13));
                 item.setTextFill(Color.web(DARK_TEXT));
 
-                Line line = new Line(0, 0, 270, 0);
-                line.setStroke(Color.web(BORDER));
+                Region line = new Region();
+
+line.setPrefHeight(1);
+line.setMinHeight(1);
+line.setMaxHeight(1);
+
+line.setMaxWidth(Double.MAX_VALUE);
+
+line.setStyle(
+        "-fx-background-color: " + BORDER + ";"
+);
 
                 HBox dateRow = createInfoRow(
                                 "calendar",
@@ -984,6 +1316,8 @@ public class DashboardScreen {
 
                 Button details = new Button("View Booking Details");
 
+                details.setPrefWidth(0);
+details.setMinWidth(0);
                 details.setMaxWidth(Double.MAX_VALUE);
                 details.setPrefHeight(36);
 
@@ -1014,7 +1348,8 @@ public class DashboardScreen {
                 VBox card = new VBox();
 
                 card.setPrefWidth(330);
-                card.setMinWidth(330);
+                card.setMinWidth(280);
+                card.setMaxWidth(Double.MAX_VALUE);
                 card.setPadding(new Insets(15, 16, 12, 16));
                 card.setSpacing(8);
 
@@ -1117,72 +1452,132 @@ public class DashboardScreen {
 
         private VBox createRecommendedSection() {
 
-                VBox section = new VBox(13);
+    VBox section = new VBox(13);
 
-                HBox header = new HBox();
+    HBox header = new HBox();
 
-                Label title = new Label("Recommended for You");
-                title.setFont(
-                                Font.font("Arial", FontWeight.BOLD, 20));
-                title.setTextFill(Color.web(DARK_TEXT));
+    Label title =
+            new Label("Recommended for You");
 
-                Region spacer = new Region();
-                HBox.setHgrow(spacer, Priority.ALWAYS);
+    title.setFont(
+            Font.font(
+                    "Arial",
+                    FontWeight.BOLD,
+                    20
+            )
+    );
 
-                Label viewAll = new Label("View All  ›");
-                viewAll.setFont(
-                                Font.font("Arial", FontWeight.BOLD, 12));
-                viewAll.setTextFill(Color.web(BLUE));
+    title.setTextFill(
+            Color.web(DARK_TEXT)
+    );
 
-                header.setAlignment(Pos.CENTER_LEFT);
-                header.getChildren().addAll(
-                                title,
-                                spacer,
-                                viewAll);
+    Region spacer = new Region();
 
-                HBox cards = new HBox(12);
+    HBox.setHgrow(
+            spacer,
+            Priority.ALWAYS
+    );
 
-                VBox cameraCard = createRentalCard(
+    Label viewAll =
+            new Label("View All  ›");
 
-                                "Sony A7III Camera Kit",
-                                "₹45",
-                                "Downtown NY (2 mi)",
-                                "4.8",
-                                "/images/camera.jpg");
+    viewAll.setFont(
+            Font.font(
+                    "Arial",
+                    FontWeight.BOLD,
+                    12
+            )
+    );
 
-                VBox sofaCard = createRentalCard(
-                                "Premium 3 Seater Sofa",
-                                "$30",
-                                "Brooklyn, NY (3 mi)",
-                                "4.6",
-                                "/images/sofa.jpg");
+    viewAll.setTextFill(
+            Color.web(BLUE)
+    );
 
-                VBox drillCard = createRentalCard(
-                                "DeWalt Cordless Drill",
-                                "₹15",
-                                "Brooklyn, NY (5mi)",
-                                "4.7",
-                                "/images/drill.jpg");
+    header.setAlignment(
+            Pos.CENTER_LEFT
+    );
 
-                VBox bikeCard = createRentalCard(
-                                "Mountain Bike",
-                                "$20",
-                                "Downtown NY (4 mi)",
-                                "4.9",
-                                "/images/bike.jpg");
+    header.getChildren().addAll(
+            title,
+            spacer,
+            viewAll
+    );
 
-                cards.getChildren().addAll(
-                                cameraCard,
-                                sofaCard,
-                                drillCard,
-                                bikeCard);
+    HBox cards = new HBox(12);
 
-                section.getChildren().addAll(
-                                header,
-                                cards);
+    cards.setFillHeight(true);
+    cards.setMaxWidth(Double.MAX_VALUE);
 
-                return section;
-        }
+    VBox cameraCard =
+            createRentalCard(
+                    "Canon EOS 200D Mark II",
+                    "₹45",
+                    "Downtown NY (2 mi)",
+                    "4.8",
+                    "/images/recommendations/canon-camera.png"
+            );
+
+    VBox sofaCard =
+            createRentalCard(
+                    "Premium 3 Seater Sofa",
+                    "$30",
+                    "Brooklyn, NY (3 mi)",
+                    "4.6",
+                    "/images/recommendations/sofa.png"
+            );
+
+    VBox drillCard =
+            createRentalCard(
+                    "Bosch Cordless Drill",
+                    "₹25",
+                    "Brooklyn, NY (5 mi)",
+                    "4.7",
+                    "/images/recommendations/drill.png"
+            );
+
+    VBox bikeCard =
+            createRentalCard(
+                    "Mountain Bike",
+                    "$20",
+                    "Downtown NY (4 mi)",
+                    "4.9",
+                    "/images/recommendations/mountain-bike.png"
+            );
+
+    HBox.setHgrow(
+            cameraCard,
+            Priority.ALWAYS
+    );
+
+    HBox.setHgrow(
+            sofaCard,
+            Priority.ALWAYS
+    );
+
+    HBox.setHgrow(
+            drillCard,
+            Priority.ALWAYS
+    );
+
+    HBox.setHgrow(
+            bikeCard,
+            Priority.ALWAYS
+    );
+
+    cards.getChildren().addAll(
+            cameraCard,
+            sofaCard,
+            drillCard,
+            bikeCard
+    );
+
+    section.getChildren().addAll(
+            header,
+            cards
+    );
+
+    return section;
+}
 
         // =============================================================
         // RENTAL CARD
@@ -1197,9 +1592,9 @@ public class DashboardScreen {
 
                 VBox card = new VBox();
 
-                card.setPrefWidth(166);
-                card.setMinWidth(166);
-                card.setMaxWidth(166);
+                card.setPrefWidth(0);
+                card.setMinWidth(0);
+                card.setMaxWidth(Double.MAX_VALUE);
 
                 card.setStyle(
                                 "-fx-background-color: #FFFFFF;" +
@@ -1211,8 +1606,14 @@ public class DashboardScreen {
                                                 "gaussian, rgba(40,60,100,0.09), 12, 0.10, 0, 3);");
 
                 StackPane imageContainer = new StackPane();
-                imageContainer.setPrefHeight(105);
-                imageContainer.setMinHeight(105);
+
+imageContainer.setPrefHeight(105);
+imageContainer.setMinHeight(105);
+imageContainer.setMaxHeight(105);
+
+imageContainer.setMaxWidth(
+        Double.MAX_VALUE
+);
 
                 try {
 
@@ -1224,8 +1625,9 @@ public class DashboardScreen {
 
                                 ImageView imageView = new ImageView(image);
 
-                                imageView.setFitWidth(155);
-                                imageView.setFitHeight(105);
+                                imageView.setFitWidth(145);
+                                imageView.setFitHeight(100);
+
                                 imageView.setPreserveRatio(true);
                                 imageView.setSmooth(true);
 
@@ -1382,28 +1784,41 @@ public class DashboardScreen {
                                 icon.setStroke(Color.TRANSPARENT);
                                 break;
 
-                        case "owner":
+                        case "profile":
                                 icon.setContent(
-                                                "M4 21 V8 H14 V21 " +
-                                                                "M14 12 H20 V21 " +
-                                                                "M7 11 H11 M7 15 H11 M7 18 H11 " +
-                                                                "M17 15 H18 M17 18 H18");
+                                "M12 12 A4 4 0 1 0 12 4 " +
+                                "A4 4 0 1 0 12 12 " +
+                                "M5 21 C5 16 8 14 12 14 " +
+                                "C16 14 19 16 19 21"
+                                );
                                 break;
 
-                        case "delivery":
+                        case "rentals":
                                 icon.setContent(
-                                                "M3 6 H14 V17 H3 Z " +
-                                                                "M14 10 H18 L21 13 V17 H14 " +
-                                                                "M6 17 A2 2 0 1 0 6 21 A2 2 0 1 0 6 17 " +
-                                                                "M18 17 A2 2 0 1 0 18 21 A2 2 0 1 0 18 17");
+                                "M4 7 H20 V20 H4 Z " +
+                                "M8 7 V5 H16 V7 " +
+                                "M8 11 H16 " +
+                                "M8 15 H16"
+                                );
                                 break;
 
-                        case "admin":
+                        case "bookings":
+                        icon.setContent(
+                                "M4 5 H20 V20 H4 Z " +
+                                "M7 3 V7 " +
+                                "M17 3 V7 " +
+                                "M4 9 H20 " +
+                                "M8 13 H11 " +
+                                "M13 13 H16 " +
+                                "M8 16 H11"
+                                );
+                                break;
+                        case "payments":
                                 icon.setContent(
-                                                "M12 3 L20 6 V11 " +
-                                                                "C20 16 16.5 19.5 12 21 " +
-                                                                "C7.5 19.5 4 16 4 11 V6 Z " +
-                                                                "M9 12 L11 14 L15 9");
+                                        "M3 6 H21 V18 H3 Z " +
+                                        "M3 10 H21 " +
+                                        "M7 15 H11"
+                                );
                                 break;
 
                         case "help":
